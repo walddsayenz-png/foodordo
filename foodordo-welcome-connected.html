@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>foodordo — نظّم مطعمك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0F1116;--bg2:#141822;--card:#191C24;--line:#2A2F3A;--text:#F3F5F8;--muted:#AEB6C3;
+    --orange1:#FBA255;--orange2:#F0762E;--green1:#4ECB99;--green2:#2FB07F;--purple1:#9887FF;--purple2:#7A6BF5;--blue1:#5C9BFF;--blue2:#3D74E6;--danger:#FF6B6B;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:"Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;overflow-x:hidden;background:radial-gradient(120% 60% at 50% -10%, #1B2130 0%, var(--bg) 55%)}
+  .wrap{max-width:520px;margin:0 auto;padding:0 22px}
+  .screen{display:none;animation:fade .5s ease both}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .hero{padding:44px 0 8px;text-align:center}
+  .flow{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:26px}
+  .tile{width:78px;height:78px;border-radius:22px;display:grid;place-items:center;opacity:0;transform:translateY(14px) scale(.9);animation:pop .55s cubic-bezier(.2,.9,.3,1.3) forwards}
+  .tile svg{width:38px;height:38px;fill:#fff}
+  .tile.o{background:linear-gradient(150deg,var(--orange1),var(--orange2));box-shadow:0 16px 34px -10px rgba(240,118,46,.55);animation-delay:.05s}
+  .tile.g{background:linear-gradient(150deg,var(--green1),var(--green2));box-shadow:0 16px 34px -10px rgba(47,176,127,.55);animation-delay:.25s}
+  .tile.p{background:linear-gradient(150deg,var(--purple1),var(--purple2));box-shadow:0 16px 34px -10px rgba(122,107,245,.55);animation-delay:.45s}
+  @keyframes pop{to{opacity:1;transform:none}}
+  .chev{color:#4B5566;font-size:22px;font-weight:800;opacity:0;animation:fade .4s .35s forwards}
+  .tlabel{margin-top:9px;font-size:12.5px;color:var(--muted);font-weight:700}
+  .tcol{display:flex;flex-direction:column;align-items:center}
+  .brand{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:52px;line-height:1;letter-spacing:-1px;margin-top:6px;background:linear-gradient(90deg,#FFFFFF 0%,#FFFFFF 40%,var(--green1) 62%,var(--purple1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .kicker{display:inline-block;margin:14px auto 0;padding:7px 16px;border-radius:999px;background:#1F2530;border:1px solid #2E3542;color:#CDD4E0;font-size:12px;font-weight:700;letter-spacing:3px}
+  .tagline{margin:30px auto 0;max-width:350px;font-weight:800;font-size:25px;line-height:1.5;color:#FFFFFF}
+  .tagline .hl{background:linear-gradient(90deg,var(--orange1),var(--purple1));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pitch{margin:16px auto 0;max-width:400px;color:var(--muted);font-size:15.5px;line-height:1.9;font-weight:500}
+  .cta{display:block;width:100%;border:0;cursor:pointer;padding:17px;border-radius:16px;font-family:inherit;font-weight:800;font-size:17px;color:#fff;background:linear-gradient(90deg,var(--orange2),var(--green2) 55%,var(--purple2));box-shadow:0 16px 34px -10px rgba(122,107,245,.5);transition:transform .15s,box-shadow .15s}
+  .cta:hover{transform:translateY(-2px)}
+  .cta:disabled{opacity:.6;cursor:default;transform:none}
+  .ghost{display:block;width:100%;padding:15px;border-radius:16px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;background:transparent;color:#fff;border:1.5px solid #333A47;transition:.15s}
+  .ghost:hover{border-color:#4B5566;background:#171B24}
+  .subnote{text-align:center;color:#8B93A2;font-size:13px;margin:12px 0 34px}
+  .feat-h{text-align:center;font-weight:800;font-size:14px;color:#8891A0;letter-spacing:1px;margin:10px 0 16px}
+  .feats{display:grid;gap:12px;padding-bottom:46px}
+  .feat{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 15px;text-align:right}
+  .fic{flex:0 0 44px;height:44px;border-radius:13px;display:grid;place-items:center}
+  .fic svg{width:22px;height:22px;fill:#fff}
+  .fic.o{background:linear-gradient(150deg,var(--orange1),var(--orange2))}
+  .fic.g{background:linear-gradient(150deg,var(--green1),var(--green2))}
+  .fic.p{background:linear-gradient(150deg,var(--purple1),var(--purple2))}
+  .fic.b{background:linear-gradient(150deg,var(--blue1),var(--blue2))}
+  .feat h3{font-size:16px;font-weight:800;margin-bottom:3px;color:#fff}
+  .feat p{font-size:13.5px;color:var(--muted);line-height:1.7;font-weight:500}
+  .feyebrow{font-size:11.5px;font-weight:800;letter-spacing:1px;margin-bottom:4px}
+  .c-o{color:var(--orange1)}.c-g{color:var(--green1)}.c-p{color:var(--purple1)}.c-b{color:var(--blue1)}
+  .page{padding:34px 0 46px}
+  .back{background:none;border:0;color:var(--muted);font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;padding:6px 0}
+  .p-title{font-weight:800;font-size:26px;margin:16px 0 6px;color:#fff}
+  .p-sub{color:var(--muted);font-weight:500;font-size:15px;margin-bottom:20px;line-height:1.8}
+  label{display:block;font-weight:700;font-size:14px;margin:16px 0 7px;color:#E6E9EF}
+  input{width:100%;padding:14px;border:1px solid var(--line);border-radius:13px;font-family:inherit;font-size:15px;background:var(--bg2);color:#fff;transition:border-color .15s}
+  input::placeholder{color:#6C7484}
+  input:focus{outline:none;border-color:var(--purple1)}
+  .msg{display:none;font-weight:700;font-size:14px;margin-top:14px;padding:11px 13px;border-radius:12px;line-height:1.6}
+  .msg.show{display:block}
+  .msg.err{color:var(--danger);background:#2A1618;border:1px solid #4A2224}
+  .msg.ok{color:var(--green1);background:#12251C;border:1px solid #1E4A32}
+  .plans{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:8px}
+  .plan{border:1.6px solid var(--line);border-radius:15px;padding:14px 8px;cursor:pointer;transition:.15s;background:var(--card);text-align:center}
+  .plan.sel{border-color:var(--purple1);background:#20213A;box-shadow:0 10px 26px -12px rgba(122,107,245,.55)}
+  .plan .name{font-weight:800;font-size:13.5px;color:#fff}
+  .plan .price{font-weight:800;font-size:16.5px;margin-top:6px;color:#fff;white-space:nowrap}
+  .plan .per{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+  .plan .tag{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:700;color:#4ECB99;background:#12321F;padding:3px 8px;border-radius:999px}
+  .amount{background:linear-gradient(150deg,#1D2130,#171A22);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;margin-bottom:8px}
+  .amount .lbl{color:var(--muted);font-size:13px;font-weight:700}
+  .amount .val{font-size:30px;font-weight:800;color:#fff;margin-top:4px}
+  .acct{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:5px 6px 5px 14px}
+  .acct .num{flex:1;font-size:16px;font-weight:700;color:#fff;letter-spacing:1px;direction:ltr;text-align:left}
+  .copy{border:0;cursor:pointer;background:#242A36;color:#CDD4E0;font-family:inherit;font-weight:700;font-size:13px;padding:9px 14px;border-radius:10px;white-space:nowrap}
+  .upload{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:16px;border:1.5px dashed #39414F;border-radius:13px;background:var(--bg2);color:var(--muted);font-weight:700;font-size:14px;cursor:pointer}
+  .upload svg{width:20px;height:20px;fill:currentColor}
+  .fname{color:var(--green1);font-size:13px;font-weight:700;margin-top:8px;display:none}
+  .fname.show{display:block}
+  .waiting{text-align:center;padding:36px 0}
+  .wicon{width:84px;height:84px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center;background:linear-gradient(150deg,var(--orange1),var(--orange2));box-shadow:0 16px 34px -12px rgba(240,118,46,.55)}
+  .wicon svg{width:40px;height:40px;fill:#fff;animation:spin 2.4s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .success{text-align:center;padding:36px 0}
+  .check{width:84px;height:84px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center;background:linear-gradient(150deg,var(--green1),var(--green2));box-shadow:0 16px 34px -12px rgba(47,176,127,.55)}
+  .check svg{width:42px;height:42px;fill:#fff}
+</style>
+</head>
+<body>
+
+<section id="welcome" class="screen active">
+  <div class="wrap">
+    <div class="hero">
+      <div class="flow">
+        <div class="tcol"><div class="tile o"><svg viewBox="0 0 24 24"><path d="M8.5 3a1 1 0 0 1 1 1v5.5a2.5 2.5 0 0 1-1.5 2.29V21a1 1 0 1 1-2 0v-9.21A2.5 2.5 0 0 1 4.5 9.5V4a1 1 0 1 1 2 0v5.5a.5.5 0 0 0 1 0V4a1 1 0 0 1 1-1Zm8 0a3.5 3.5 0 0 1 3.5 3.5c0 1.6-.9 2.98-2.2 3.32V21a1 1 0 1 1-2 0V9.82C14.4 9.48 13.5 8.1 13.5 6.5A3.5 3.5 0 0 1 16.5 3Z"/></svg></div><span class="tlabel">الطلب</span></div>
+        <span class="chev">»</span>
+        <div class="tcol"><div class="tile g"><svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm9 2.5A3.5 3.5 0 1 0 15.5 12 3.5 3.5 0 0 0 12 8.5Zm0 2A1.5 1.5 0 1 1 10.5 12 1.5 1.5 0 0 1 12 10.5Z"/></svg></div><span class="tlabel">الدفع</span></div>
+        <span class="chev">»</span>
+        <div class="tcol"><div class="tile p"><svg viewBox="0 0 24 24"><path d="M7 21a1 1 0 0 1-1-1v-4h12v4a1 1 0 0 1-1 1H7Zm5-18a5 5 0 0 1 4.9 4.02A4 4 0 0 1 16.5 15h-9A4 4 0 0 1 7.1 7.02 5 5 0 0 1 12 3Zm-5 14h10v-1H7v1Z"/></svg></div><span class="tlabel">التحضير</span></div>
+      </div>
+      <div class="brand">foodordo</div>
+      <div class="kicker">ORDER · PAY · COOK</div>
+      <h1 class="tagline">نظّم مطعمك من <span class="hl">الطلب إلى الطبخ</span> في نظام واحد ذكي</h1>
+      <p class="pitch">الزبون يبني طلبه بنفسه من جهازك في المحل. بمجرد الدفع يصل الطلب فوراً لشاشة المطبخ ليبدأ الطبّاخون التحضير — وأنت تتابع كل شيء بالأرقام: المخزون، المبيعات، وأجور العمّال.</p>
+      <div style="margin-top:28px;display:grid;gap:11px">
+        <button class="ghost" onclick="show('login')">لديك حساب؟ تسجيل الدخول</button>
+        <button class="cta" onclick="show('subscribe')">ابدأ الآن</button>
+      </div>
+      <p class="subnote">سجّل مطعمك وفعّل الاشتراك خلال دقائق</p>
+    </div>
+    <p class="feat-h">كيف يعمل foodordo؟</p>
+    <div class="feats">
+      <div class="feat"><div class="fic o"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.3 0-8 1.65-8 5v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-3.35-4.7-5-8-5Z"/></svg></div><div><div class="feyebrow c-o">01 · الطلب</div><h3>خدمة ذاتية بلا طوابير</h3><p>الزبون ينشئ طلبيته بنفسه من جهازك في المحل — يختار الأكلة والنوع والكمية والصلصات، دون انتظار في الطابور.</p></div></div>
+      <div class="feat"><div class="fic g"><svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm9 2.5A3.5 3.5 0 1 0 15.5 12 3.5 3.5 0 0 0 12 8.5Zm0 2A1.5 1.5 0 1 1 10.5 12 1.5 1.5 0 0 1 12 10.5Z"/></svg></div><div><div class="feyebrow c-g">02 · الدفع</div><h3>الكاشير يمرّر الطلب فوراً</h3><p>بعد استلام الدفع، يحوّل الكاشير الطلب مباشرة إلى شاشة المطبخ — بلا ورق ولا تأخير.</p></div></div>
+      <div class="feat"><div class="fic p"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-5v2h3a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2h3v-2H5a2 2 0 0 1-2-2Z"/></svg></div><div><div class="feyebrow c-p">03 · التحضير</div><h3>شاشة المطبخ للطهاة</h3><p>يظهر كل طلب برقم الزبون ومحتواه، وأمام الطاهي زر "تسليم" يسجّل الطلب كمُسلَّم فور جهوزه.</p></div></div>
+      <div class="feat"><div class="fic b"><svg viewBox="0 0 24 24"><path d="M5 3a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h15a1 1 0 0 0 0-2H6V4a1 1 0 0 0-1-1Zm14 4a1 1 0 0 0-1.7-.7L14 9.6l-2.3-2.3a1 1 0 0 0-1.4 0L7 10.6a1 1 0 1 0 1.4 1.4L11 9.4l2.3 2.3a1 1 0 0 0 1.4 0l4-4A1 1 0 0 0 19 7Z"/></svg></div><div><div class="feyebrow c-b">04 · المتابعة</div><h3>مراقبة كاملة لصاحب المشروع</h3><p>تابع كل شيء بالأرقام — المبيعات والأرباح والمواد الأولية وأجور العمّال — لحظة بلحظة.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="login" class="screen">
+  <div class="wrap"><div class="page">
+    <button class="back" onclick="show('welcome')">‹ رجوع</button>
+    <h2 class="p-title">تسجيل الدخول</h2>
+    <p class="p-sub">أدخل رقم هاتفك وكلمة السر التي استلمتها بعد تفعيل الاشتراك.</p>
+    <label>رقم الهاتف</label>
+    <input id="loginPhone" type="tel" placeholder="0X XX XX XX XX" dir="ltr" style="text-align:right" />
+    <label>كلمة السر</label>
+    <input id="loginPass" type="password" placeholder="كلمة السر" />
+    <div id="loginMsg" class="msg err"></div>
+    <button id="loginBtn" class="cta" style="margin-top:24px" onclick="doLogin()">دخول</button>
+  </div></div>
+</section>
+
+<section id="subscribe" class="screen">
+  <div class="wrap"><div class="page">
+    <button class="back" onclick="show('welcome')">‹ رجوع</button>
+    <h2 class="p-title">أنشئ حساب مطعمك</h2>
+    <p class="p-sub">فعّل اشتراكك وابدأ باستقبال الطلبات اليوم.</p>
+    <label>اسم المطعم</label>
+    <input id="regName" type="text" placeholder="مثال: مطعم الذواقة" />
+    <label>اسم المسؤول</label>
+    <input id="regOwner" type="text" placeholder="الاسم الكامل" />
+    <label>رقم الهاتف</label>
+    <input id="regPhone" type="tel" placeholder="0X XX XX XX XX" dir="ltr" style="text-align:right" />
+    <label>اختر باقة الاشتراك</label>
+    <div class="plans">
+      <div class="plan" data-name="شهر" data-price="1700" onclick="pick(this)"><div class="name">شهر</div><div class="price">1700 دج</div><div class="per">شهرياً</div></div>
+      <div class="plan sel" data-name="6 أشهر" data-price="6800" onclick="pick(this)"><div class="name">6 أشهر</div><div class="price">6800 دج</div><div class="per">لكل 6 أشهر</div><div class="tag">الأوفر</div></div>
+      <div class="plan" data-name="مدى الحياة" data-price="14990" onclick="pick(this)"><div class="name">مدى الحياة</div><div class="price">14990 دج</div><div class="per">دفعة واحدة</div></div>
+    </div>
+    <div id="subMsg" class="msg err"></div>
+    <button class="cta" style="margin-top:26px" onclick="goPayment()">ادفع وابدأ</button>
+  </div></div>
+</section>
+
+<section id="payment" class="screen">
+  <div class="wrap"><div class="page">
+    <button class="back" onclick="show('subscribe')">‹ رجوع</button>
+    <h2 class="p-title">الدفع</h2>
+    <div class="amount"><div class="lbl">المبلغ المستحق دفعه</div><div class="val"><span id="payAmount">6800</span> دج</div></div>
+    <label>الدفع عن طريق RIP بريدي موب — حوّل إلى هذا الحساب:</label>
+    <div class="acct"><span class="num" id="acctNum">007799999002070490038</span><button class="copy" onclick="copyAcct()">نسخ</button></div>
+    <label>الرقم المرجعي للعملية</label>
+    <input id="payRef" type="text" placeholder="أدخل الرقم المرجعي للتحويل" dir="ltr" style="text-align:right" />
+    <label>دليل الدفع</label>
+    <label class="upload" for="proof"><svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 .7.3l4 4a1 1 0 0 1-1.4 1.4L13 6.4V15a1 1 0 0 1-2 0V6.4L8.7 8.7a1 1 0 0 1-1.4-1.4l4-4A1 1 0 0 1 12 3ZM5 15a1 1 0 0 1 1 1v3h12v-3a1 1 0 0 1 2 0v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1Z"/></svg><span>ارفع صورة إيصال الدفع</span></label>
+    <input id="proof" type="file" accept="image/*" style="display:none" onchange="showFile(this)" />
+    <div id="fname" class="fname"></div>
+    <div id="payMsg" class="msg err"></div>
+    <button id="payBtn" class="cta" style="margin-top:26px" onclick="submitPayment()">تم</button>
+  </div></div>
+</section>
+
+<section id="waiting" class="screen">
+  <div class="wrap"><div class="page waiting">
+    <div class="wicon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10h-2a8 8 0 1 1-8-8Z"/></svg></div>
+    <h2 class="p-title" style="text-align:center">بانتظار تأكيد الدفع</h2>
+    <p class="p-sub" style="text-align:center;max-width:400px;margin:6px auto 26px">تم إرسال طلبك بنجاح. يرجى الانتظار حتى نتأكد من الدفع. ستستلم كلمة السر لتدخل إلى لوحة تحكم مطعمك.</p>
+    <button class="cta" onclick="show('login')">لديك كلمة السر؟ تسجيل الدخول</button>
+  </div></div>
+</section>
+
+<section id="loggedin" class="screen">
+  <div class="wrap"><div class="page success">
+    <div class="check"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg></div>
+    <h2 class="p-title" style="text-align:center">أهلاً بك في مطعمك 🎉</h2>
+    <p class="p-sub" style="text-align:center;max-width:400px;margin:6px auto 26px">تم تسجيل الدخول بنجاح. لوحة تحكم التاجر هي الخطوة القادمة في بناء المشروع.</p>
+    <button class="cta" onclick="show('welcome')">رجوع للبداية</button>
+  </div></div>
+</section>
+
+<script>
+  // ===== ربط Supabase عبر الواجهة البرمجية المباشرة (بلا مكتبة خارجية) =====
+  var SUPABASE_URL = 'https://tflmkscxuvznpvidcgff.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_P210ESDiwZnLYYqTu4rc3A_s5C-xHuh';
+  var REST = SUPABASE_URL + '/rest/v1/';
+  function headers(extra){
+    var h = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
+    if(extra){ for(var k in extra) h[k]=extra[k]; }
+    return h;
+  }
+
+  var pendingReg = null;
+
+  function show(id){
+    var list=document.querySelectorAll('.screen');
+    for(var i=0;i<list.length;i++) list[i].classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top:0});
+  }
+  function pick(el){
+    var ps=document.querySelectorAll('.plan');
+    for(var i=0;i<ps.length;i++) ps[i].classList.remove('sel');
+    el.classList.add('sel');
+  }
+  function msg(id, text, ok){
+    var el=document.getElementById(id);
+    el.textContent=text;
+    el.className='msg show '+(ok?'ok':'err');
+  }
+  function hideMsg(id){ document.getElementById(id).className='msg'; }
+
+  function goPayment(){
+    hideMsg('subMsg');
+    var name=document.getElementById('regName').value.trim();
+    var owner=document.getElementById('regOwner').value.trim();
+    var phone=document.getElementById('regPhone').value.trim();
+    var sel=document.querySelector('.plan.sel');
+    if(!name || !owner || !phone){ msg('subMsg','يرجى ملء اسم المطعم واسم المسؤول ورقم الهاتف.'); return; }
+    if(!sel){ msg('subMsg','يرجى اختيار باقة.'); return; }
+    pendingReg={ restaurant_name:name, owner_name:owner, phone:phone,
+      plan_type:sel.getAttribute('data-name'),
+      subscription_price:Number(sel.getAttribute('data-price')) };
+    document.getElementById('payAmount').textContent=sel.getAttribute('data-price');
+    show('payment');
+  }
+
+  // زر «تم»: إنشاء صف جديد في restaurants (POST مباشر إلى واجهة Supabase)
+  function submitPayment(){
+    hideMsg('payMsg');
+    if(!pendingReg){ msg('payMsg','حدث خطأ، ابدأ التسجيل من جديد.'); return; }
+    var ref=document.getElementById('payRef').value.trim();
+    var btn=document.getElementById('payBtn'); btn.disabled=true; btn.textContent='جارٍ الإرسال…';
+    var row={ restaurant_name:pendingReg.restaurant_name, owner_name:pendingReg.owner_name,
+      phone:pendingReg.phone, plan_type:pendingReg.plan_type,
+      subscription_price:pendingReg.subscription_price, payment_ref:ref, status:'en_attente' };
+    fetch(REST+'restaurants', {
+      method:'POST',
+      headers: headers({ 'Content-Type':'application/json', 'Prefer':'return=minimal' }),
+      body: JSON.stringify(row)
+    }).then(function(res){
+      if(!res.ok){ return res.text().then(function(t){ throw new Error(t || ('HTTP '+res.status)); }); }
+      pendingReg=null; show('waiting');
+    }).catch(function(e){
+      msg('payMsg','تعذّر إرسال الطلب: '+(e.message||e));
+    }).finally(function(){ btn.disabled=false; btn.textContent='تم'; });
+  }
+
+  // زر «دخول»: تحقق من الهاتف وكلمة السر (GET مباشر)
+  function doLogin(){
+    hideMsg('loginMsg');
+    var phone=document.getElementById('loginPhone').value.trim();
+    var pass=document.getElementById('loginPass').value.trim();
+    if(!phone || !pass){ msg('loginMsg','أدخل رقم الهاتف وكلمة السر.'); return; }
+    var btn=document.getElementById('loginBtn'); btn.disabled=true; btn.textContent='جارٍ التحقق…';
+    var url=REST+'restaurants?select=id,status&phone=eq.'+encodeURIComponent(phone)+'&password=eq.'+encodeURIComponent(pass);
+    fetch(url, { headers: headers() }).then(function(res){
+      if(!res.ok){ return res.text().then(function(t){ throw new Error(t || ('HTTP '+res.status)); }); }
+      return res.json();
+    }).then(function(rows){
+      if(!rows || !rows.length){ msg('loginMsg','رقم الهاتف أو كلمة السر غير صحيحة.'); return; }
+      if(rows[0].status!=='actif'){ msg('loginMsg','اشتراكك لم يُفعَّل بعد. انتظر تأكيد الدفع.'); return; }
+      show('loggedin');
+    }).catch(function(e){
+      msg('loginMsg','خطأ في الاتصال: '+(e.message||e));
+    }).finally(function(){ btn.disabled=false; btn.textContent='دخول'; });
+  }
+
+  function copyAcct(){
+    var num=document.getElementById('acctNum').textContent.trim();
+    var btn=event.target;
+    try{ var t=document.createElement('textarea'); t.value=num; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); btn.textContent='تم النسخ ✓'; setTimeout(function(){btn.textContent='نسخ';},1500);}catch(e){ btn.textContent='انسخ يدوياً'; }
+  }
+  function showFile(inp){ var f=inp.files[0]; var el=document.getElementById('fname'); if(f){ el.textContent='✓ '+f.name; el.classList.add('show'); } }
+</script>
+</body>
+</html>
