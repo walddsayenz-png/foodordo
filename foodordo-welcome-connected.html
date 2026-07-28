@@ -275,7 +275,7 @@
     }).then(function(rows){
       if(!rows || !rows.length){ msg('loginMsg','رقم الهاتف أو كلمة السر غير صحيحة.'); return; }
       if(rows[0].status!=='actif'){ msg('loginMsg','اشتراكك لم يُفعَّل بعد. انتظر تأكيد الدفع.'); return; }
-      show('loggedin');
+      window.location.href='foodordo-merchant-connected.html?rid='+rows[0].id;
     }).catch(function(e){
       msg('loginMsg','خطأ في الاتصال: '+(e.message||e));
     }).finally(function(){ btn.disabled=false; btn.textContent='دخول'; });
