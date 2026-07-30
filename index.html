@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>foodordo</title>
+<style>
+  html,body{margin:0;height:100%;background:#0F1116;color:#AEB6C3;font-family:system-ui,sans-serif;display:grid;place-items:center}
+  .b{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:34px;letter-spacing:-1px}
+  .b .a{color:#fff}.b .g{background:linear-gradient(90deg,#4ECB99,#9887FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  p{font-size:13px;margin-top:10px}
+</style>
+<script>
+  // إعادة توجيه فورية إلى صفحة الترحيب مع الحفاظ على أي رمز (تأكيد / استعادة كلمة السر) في الرابط
+  (function(){
+    var target='foodordo-welcome-connected.html' + (location.search||'') + (location.hash||'');
+    location.replace(target);
+  })();
+</script>
+</head>
+<body>
+  <div style="text-align:center">
+    <div class="b"><span class="a">food</span><span class="g">ordo</span></div>
+    <p>جارٍ التحويل…</p>
+  </div>
+</body>
+</html>
