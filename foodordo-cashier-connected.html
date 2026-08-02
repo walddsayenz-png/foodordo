@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>foodordo — الكاشير</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0F1116;--bg2:#141822;--card:#191C24;--line:#2A2F3A;--text:#F3F5F8;--muted:#AEB6C3;
+        --orange1:#FBA255;--orange2:#F0762E;--green1:#4ECB99;--green2:#2FB07F;--purple1:#9887FF;--purple2:#7A6BF5;--blue1:#5C9BFF;--blue2:#3D74E6;--amber:#F3C969;--red:#FF6B6B;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:"Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:radial-gradient(120% 40% at 50% -8%, #1B2130 0%, var(--bg) 55%);min-height:100vh;padding-bottom:40px}
+  .wrap{max-width:600px;margin:0 auto;padding:0 18px}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:22px 0 6px}
+  .brand{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:24px;letter-spacing:-1px;background:linear-gradient(90deg,#fff 45%,var(--green1) 70%,var(--purple1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .role{font-size:12.5px;font-weight:800;color:var(--green1);background:#12251C;border:1px solid #1E4A32;padding:6px 12px;border-radius:999px}
+  .h1{font-weight:800;font-size:21px;margin:8px 0 2px}
+  .sub{color:var(--muted);font-size:13px;font-weight:500;margin-bottom:16px;line-height:1.7}
+  .search{display:flex;gap:9px;margin-bottom:16px}
+  .search input{flex:1;padding:14px;border:1px solid var(--line);border-radius:13px;font-family:inherit;font-size:18px;font-weight:800;background:var(--bg2);color:#fff;text-align:center}
+  .search input:focus{outline:none;border-color:var(--green2)}
+  .search button{border:0;cursor:pointer;background:linear-gradient(90deg,var(--green2),var(--purple2));color:#fff;font-family:inherit;font-weight:800;font-size:15px;padding:0 18px;border-radius:13px}
+  .tabs{display:flex;gap:7px;margin-bottom:16px}
+  .tab{flex:1;text-align:center;padding:11px 4px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--muted);transition:.15s}
+  .tab .cc{display:inline-block;min-width:20px;margin-inline-start:5px;font-size:11px;border-radius:999px;padding:1px 6px;background:#2A2F3A;color:#CDD4E0}
+  .tab.active.tn{border-color:var(--amber);background:linear-gradient(150deg,rgba(243,201,105,.2),transparent);color:#fff}
+  .tab.active.tp{border-color:var(--green2);background:linear-gradient(150deg,rgba(47,176,127,.2),transparent);color:#fff}
+  .tab.active.tr{border-color:var(--red);background:linear-gradient(150deg,rgba(255,107,107,.18),transparent);color:#fff}
+  .refresh{border:1px solid var(--line);background:var(--bg2);color:var(--muted);font-family:inherit;font-weight:800;font-size:12.5px;padding:7px 13px;border-radius:10px;cursor:pointer;margin-bottom:12px}
+  .ocard{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:11px;cursor:pointer;transition:.15s}
+  .ocard:active{transform:scale(.99)}
+  .ocard.hit{border-color:var(--green2);box-shadow:0 0 0 2px rgba(47,176,127,.25)}
+  .ocard.mut{opacity:.75;cursor:default}
+  .onum{width:54px;height:54px;flex:0 0 54px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:22px;font-family:"Baloo 2",sans-serif}
+  .onum.n{background:linear-gradient(150deg,var(--orange1),var(--orange2))}
+  .onum.p{background:linear-gradient(150deg,var(--green1),var(--green2))}
+  .onum.r{background:linear-gradient(150deg,#7A828F,#4C5561)}
+  .oinfo{flex:1}
+  .oinfo b{display:block;font-size:15px;font-weight:800;color:#fff}
+  .oinfo span{font-size:12.5px;color:var(--muted);font-weight:600}
+  .otot{font-weight:800;font-size:16px;white-space:nowrap}
+  .otot.g{color:var(--green1)} .otot.m{color:var(--muted)}
+  .empty{text-align:center;color:#6C7484;font-weight:600;padding:26px 0;font-size:14px}
+  .modal{position:fixed;inset:0;background:rgba(6,8,12,.72);display:none;align-items:flex-end;justify-content:center;z-index:20}
+  .modal.show{display:flex}
+  .sheet{background:var(--card);border:1px solid var(--line);border-radius:22px 22px 0 0;width:100%;max-width:600px;padding:20px 18px 26px;animation:up .25s both}
+  @keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+  .sheet .hh{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .sheet .onum{width:60px;height:60px;flex:0 0 60px;font-size:24px}
+  .sheet .hh .t b{display:block;font-size:19px;font-weight:800;color:#fff}
+  .sheet .hh .t span{font-size:13px;color:var(--muted);font-weight:600}
+  .li{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #20242E;font-size:14.5px}
+  .li .n{color:#E6E9EF;font-weight:700}
+  .li .n small{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-top:2px}
+  .li .p{color:#fff;font-weight:800;white-space:nowrap}
+  .totrow{display:flex;justify-content:space-between;align-items:center;margin:14px 0 4px}
+  .totrow .k{color:var(--muted);font-weight:700;font-size:15px}
+  .totrow .v{color:var(--green1);font-weight:800;font-size:26px}
+  .cta{display:block;width:100%;border:0;cursor:pointer;padding:16px;border-radius:14px;font-family:inherit;font-weight:800;font-size:16px;color:#fff;background:linear-gradient(90deg,var(--green2),var(--purple2));margin-top:8px}
+  .cta:disabled{opacity:.6}
+  .cta:active{transform:translateY(1px)}
+  .rej{display:block;width:100%;padding:13px;border-radius:14px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;background:#2A1618;border:1px solid #4A2224;color:#FF8A8A;margin-top:9px}
+  .ghost{display:block;width:100%;padding:13px;border-radius:14px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;background:transparent;color:var(--muted);border:1px solid var(--line);margin-top:9px}
+  .dmsg{display:none;font-weight:700;font-size:13px;padding:10px 12px;border-radius:11px;margin-top:10px}
+  .dmsg.show{display:block}
+  .dmsg.err{color:var(--red);background:#2A1618;border:1px solid #4A2224}
+  /* تأكيد نعم/لا */
+  .confirm{background:#141822;border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:10px;display:none}
+  .confirm.show{display:block}
+  .confirm p{font-size:15px;font-weight:800;color:#fff;text-align:center;margin-bottom:12px}
+  .cbtns{display:flex;gap:10px}
+  .cbtns button{flex:1;border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:15px;padding:13px;border-radius:11px}
+  .yes{color:#fff}
+  .yes.pay{background:linear-gradient(90deg,var(--green2),var(--purple2))}
+  .yes.rejc{background:var(--red)}
+  .no{background:#242A36;color:#CDD4E0}
+  .paidmsg{display:none;text-align:center;padding:12px 0 2px}
+  .paidmsg.show{display:block}
+  .paidmsg .ic{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center}
+  .paidmsg.ok .ic{background:linear-gradient(150deg,var(--green1),var(--green2))}
+  .paidmsg.no .ic{background:linear-gradient(150deg,#7A828F,#4C5561)}
+  .paidmsg .ic svg{width:32px;height:32px;fill:#fff}
+  .paidmsg b{font-size:18px;font-weight:800;color:#fff;display:block}
+  .paidmsg span{font-size:13.5px;color:var(--muted);font-weight:600}
+  .gate{max-width:460px;margin:80px auto;text-align:center;padding:0 22px}
+</style>
+<script>
+  // حماية من Clickjacking — بلا كسر المتصفّحات المدمجة (واتساب/فيسبوك/المعاينة)
+  // نحاول الخروج من الإطار فقط، ولا نمسح الصفحة أبداً إن تعذّر ذلك.
+  (function(){
+    try{
+      if (window.top !== window.self && window.top.location.origin !== window.self.location.origin) {
+        window.top.location = window.self.location.href;
+      }
+    }catch(e){ /* متصفّح مدمج أو منع أمني — نتجاهل بلا تعطيل الصفحة */ }
+  })();
+</script>
+</head>
+<body>
+
+<div id="gate" class="gate" style="display:none">
+  <div class="brand" style="font-size:30px">foodordo</div>
+  <h2 class="h1" style="text-align:center;margin-top:16px">دخول الكاشير</h2>
+  <p class="sub" style="text-align:center">سجّل الدخول بحساب المطعم لاستلام الطلبات.</p>
+  <div style="background:#191C24;border:1px solid #2A2F3A;border-radius:18px;padding:20px;margin-top:8px">
+    <label style="display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#E6E9EF">البريد الإلكتروني</label>
+    <input id="gEmail" type="email" inputmode="email" autocomplete="username" placeholder="you@example.com" style="width:100%;padding:13px;border:1px solid #2A2F3A;border-radius:11px;font-family:inherit;font-size:15px;background:#141822;color:#fff" />
+    <label style="display:block;font-weight:700;font-size:13px;margin:12px 0 6px;color:#E6E9EF">كلمة السر</label>
+    <input id="gPass" type="password" autocomplete="current-password" placeholder="كلمة السر" style="width:100%;padding:13px;border:1px solid #2A2F3A;border-radius:11px;font-family:inherit;font-size:15px;background:#141822;color:#fff" />
+    <button id="gBtn" onclick="doGateLogin()" style="display:block;width:100%;margin-top:18px;border:0;cursor:pointer;padding:14px;border-radius:12px;font-family:inherit;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(90deg,#2FB07F,#7A6BF5)">دخول</button>
+    <div id="gMsg" style="display:none;font-weight:700;font-size:13px;padding:10px 12px;border-radius:11px;margin-top:12px;color:#FF6B6B;background:#2A1618;border:1px solid #4A2224"></div>
+  </div>
+</div>
+
+<div id="app" class="wrap" style="display:none">
+  <div class="top"><div class="brand">foodordo</div><div style="display:flex;gap:8px;align-items:center"><button onclick="logout()" style="background:#2A1618;border:1px solid #4A2224;color:#FF8A8A;font-family:inherit;font-weight:800;font-size:12px;padding:7px 13px;border-radius:999px;cursor:pointer">خروج</button><div class="role" id="roleTag">الكاشير</div></div></div>
+  <div class="h1">استلام الطلبات</div>
+  <div class="sub">ابحث برقم الطلب، أو اختره من القائمة. تُلغى تلقائياً الطلبات التي تتجاوز 15 دقيقة بلا دفع.</div>
+
+  <div class="search">
+    <input id="q" type="number" inputmode="numeric" placeholder="رقم الطلب" oninput="render()" />
+    <button onclick="render()">بحث</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab tn active" onclick="setTab('new',this)">غير مدفوعة <span class="cc" id="cNew">0</span></div>
+    <div class="tab tp" onclick="setTab('paid',this)">ممرَّرة <span class="cc" id="cPaid">0</span></div>
+    <div class="tab tr" onclick="setTab('cancelled',this)">مرفوضة <span class="cc" id="cRej">0</span></div>
+  </div>
+  <button class="refresh" onclick="loadOrders()">تحديث ↻</button>
+  <div id="list"><div class="empty">جارٍ التحميل…</div></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="sheet">
+    <div id="detailBody">
+      <div class="hh"><div class="onum n" id="dNum">1</div><div class="t"><b>طلب رقم <span id="dNum2">1</span></b><span id="dMeta"></span></div></div>
+      <div id="dItems"></div>
+      <div class="totrow"><span class="k">الإجمالي</span><span class="v"><span id="dTotal">0</span> دج</span></div>
+      <div id="dMsg" class="dmsg err"></div>
+
+      <!-- الأزرار العادية (للطلبات غير المدفوعة) -->
+      <div id="actions">
+        <button class="cta" onclick="askPay()">تأكيد الدفع وتمرير للمطبخ</button>
+        <button class="rej" onclick="askReject()">رفض الطلب</button>
+        <button class="ghost" onclick="closeModal()">إغلاق</button>
+      </div>
+
+      <!-- تأكيد الدفع -->
+      <div class="confirm" id="confirmPayBox">
+        <p>هل تؤكّد تمرير الطلب رقم <span id="cpNum"></span>؟</p>
+        <div class="cbtns"><button class="yes pay" id="payYes" onclick="doPay()">نعم، مرّر</button><button class="no" onclick="hideConfirms()">لا</button></div>
+      </div>
+      <!-- تأكيد الرفض -->
+      <div class="confirm" id="confirmRejBox">
+        <p>هل تؤكّد رفض الطلب رقم <span id="crNum"></span>؟</p>
+        <div class="cbtns"><button class="yes rejc" id="rejYes" onclick="doReject()">نعم، ارفض</button><button class="no" onclick="hideConfirms()">لا</button></div>
+      </div>
+
+      <!-- للطلبات المدفوعة: إلغاء وإرجاع المخزون -->
+      <div id="paidActions" style="display:none">
+        <button class="rej" onclick="askRefund()">إلغاء الطلب وإرجاع المخزون</button>
+        <button class="ghost" onclick="closeModal()">إغلاق</button>
+      </div>
+      <div class="confirm" id="confirmRefBox">
+        <p>إلغاء الطلب رقم <span id="cfNum"></span>؟ ستُرجَع مواده إلى المخزون، ويُحذف من المبيعات. لا يمكن التراجع.</p>
+        <div class="cbtns"><button class="yes rejc" id="refYes" onclick="doRefund()">نعم، ألغِ</button><button class="no" onclick="hideConfirms()">لا</button></div>
+      </div>
+
+      <!-- للطلبات المرفوضة (عرض فقط) -->
+      <div id="viewOnly" style="display:none"><button class="ghost" onclick="closeModal()">إغلاق</button></div>
+    </div>
+    <div class="paidmsg" id="paidMsg">
+      <div class="ic" id="pmIc"></div>
+      <b id="pmTitle"></b><span id="pmSub"></span>
+      <button class="cta" onclick="closeModal()">تمام</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== حماية من XSS: تهريب أي نصّ قادم من المستخدم قبل عرضه =====
+  // ===== رسائل أخطاء آمنة: لا نكشف تفاصيل قاعدة البيانات للمستخدم =====
+  function safeErr(e){
+    var m = String((e && e.message) || e || '');
+    if(m.indexOf('rate limit')>-1)          return 'الخدمة مزدحمة حالياً، حاول بعد لحظات.';
+    if(m.indexOf('insufficient stock:')>-1) return 'نفد المخزون من: ' + esc(m.split('insufficient stock:')[1].split('"')[0].replace(/[}\\]/g,'').trim());
+    if(m.indexOf('daily limit')>-1)         return 'اكتمل الحدّ الأقصى للطلبات اليوم.';
+    if(m.indexOf('invalid product')>-1)     return 'أحد المنتجات لم يعد متاحاً. حدّث القائمة.';
+    if(m.indexOf('empty order')>-1)         return 'الطلب فارغ.';
+    if(m.indexOf('does not belong')>-1)     return 'هذا الطلب لا يخصّ مطعمك.';
+    if(m.indexOf('materials_qty_non_negative')>-1) return 'الكمية غير كافية في المخزون.';
+    if(m.indexOf('chk_')>-1 || m.indexOf('char_length')>-1) return 'أحد الحقول أطول من المسموح. اختصره.';
+    if(m.indexOf('duplicate key')>-1)       return 'هذا العنصر مسجّل مسبقاً.';
+    if(m.indexOf('violates foreign key')>-1)return 'لا يمكن تنفيذ العملية — العنصر مرتبط ببيانات أخرى.';
+    if(m.indexOf('row-level security')>-1 || m.indexOf('permission denied')>-1) return 'لا تملك صلاحية هذه العملية.';
+    if(m.indexOf('JWT')>-1 || m.indexOf('PGRST303')>-1) return 'انتهت الجلسة، سجّل الدخول من جديد.';
+    if(m.indexOf('Failed to fetch')>-1 || m.indexOf('NetworkError')>-1) return 'تعذّر الاتصال — تحقّق من الإنترنت.';
+    return 'تعذّر إتمام العملية. حاول مجدداً.';
+  }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var SUPABASE_URL='https://tflmkscxuvznpvidcgff.supabase.co';
+  var SUPABASE_KEY='sb_publishable_P210ESDiwZnLYYqTu4rc3A_s5C-xHuh';
+  var REST=SUPABASE_URL+'/rest/v1/';
+  var AUTH=SUPABASE_URL+'/auth/v1/';
+  var TOKEN=null;
+  try{ TOKEN=localStorage.getItem('fo_token'); }catch(e){}
+  function H(x){ var h={apikey:SUPABASE_KEY,Authorization:'Bearer '+(TOKEN||SUPABASE_KEY)}; if(x){for(var k in x)h[k]=x[k];} return h; }
+  function onAuthFail(r,t){ if(r.status===401 || (t&&(t.indexOf('JWT expired')>-1||t.indexOf('PGRST303')>-1))){ refreshNow().then(function(ok){ if(ok){ location.reload(); } else { logout(); } }); return true; } return false; }
+  function gGet(p){ return fetch(REST+p,{headers:H()}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); return r.json(); }); }
+  function gRpc(fn,b){ return fetch(REST+'rpc/'+fn,{method:'POST',headers:H({'Content-Type':'application/json'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); }); }
+  function gPatch(p,b){ return fetch(REST+p,{method:'PATCH',headers:H({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); }); }
+
+  var RID=null, RNAME='';
+  try{ RID=localStorage.getItem('fo_rid'); RNAME=localStorage.getItem('fo_rname')||''; }catch(e){}
+  var all={new:[],paid:[],cancelled:[]}, curTab='new', cur=null;
+  function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function timeOf(ts){ if(!ts)return ''; var d=new Date(ts); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+
+  function doGateLogin(){
+    var email=(document.getElementById('gEmail').value||'').trim(), pass=(document.getElementById('gPass').value||'');
+    var em=document.getElementById('gMsg');
+    if(!email||!pass){ em.textContent='أدخل البريد وكلمة السر.'; em.style.display='block'; return; }
+    var b=document.getElementById('gBtn'); b.disabled=true; b.textContent='جارٍ الدخول…';
+    fetch(AUTH+'token?grant_type=password',{method:'POST',headers:H({'Content-Type':'application/json'}),body:JSON.stringify({email:email,password:pass})})
+      .then(function(r){ return r.json().then(function(d){ if(!r.ok) throw new Error(d.error_description||d.msg||'بيانات الدخول غير صحيحة'); return d; }); })
+      .then(function(sess){
+        var tok=sess.access_token;
+        return fetch(REST+'restaurants?select=id,restaurant_name,status,subscription_end&or=(user_id.eq.'+sess.user.id+',staff_user_id.eq.'+sess.user.id+')',{headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+tok}})
+          .then(function(r){return r.json();})
+          .then(function(rows){
+            if(!rows||!rows.length) throw new Error('لا يوجد مطعم مرتبط بهذا الحساب.');
+            if(rows[0].status!=='actif') throw new Error('حساب المطعم غير مفعّل بعد.');
+            if(rows[0].subscription_end && rows[0].subscription_end < iso(new Date())) throw new Error('انتهى اشتراك المطعم. يرجى التجديد.');
+            TOKEN=tok; RID=rows[0].id; RNAME=rows[0].restaurant_name||'';
+            try{ localStorage.setItem('fo_token',tok); localStorage.setItem('fo_refresh',sess.refresh_token||''); localStorage.setItem('fo_rid',RID); localStorage.setItem('fo_rname',RNAME); }catch(e){}
+            document.getElementById('gate').style.display='none'; boot();
+          });
+      })
+      .catch(function(e){ var m=safeErr(e)+''; if(m.indexOf('nvalid')>-1) m='البريد أو كلمة السر غير صحيحة.'; em.textContent=m; em.style.display='block'; })
+      .finally(function(){ b.disabled=false; b.textContent='دخول'; });
+  }
+  function logout(){ try{ localStorage.removeItem('fo_token'); localStorage.removeItem('fo_rid'); localStorage.removeItem('fo_rname'); }catch(e){} location.reload(); }
+
+  function refreshNow(){
+    var rt=null; try{ rt=localStorage.getItem('fo_refresh'); }catch(e){}
+    if(!rt) return Promise.resolve(false);
+    return fetch(AUTH+'token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:rt})})
+      .then(function(r){ if(!r.ok) return false; return r.json().then(function(d){ if(d.access_token){ TOKEN=d.access_token; try{ localStorage.setItem('fo_token',d.access_token); if(d.refresh_token)localStorage.setItem('fo_refresh',d.refresh_token); }catch(e){} return true; } return false; }); })
+      .catch(function(){ return false; });
+  }
+  function checkSubscription(){
+    return gGet('restaurants?select=status,subscription_end&id=eq.'+RID).then(function(r){
+      if(!r||!r[0]) return true;
+      var rest=r[0];
+      var t=iso(new Date());
+      if(rest.status!=='actif' || (rest.subscription_end && rest.subscription_end < t)){
+        try{ localStorage.removeItem('fo_token'); localStorage.removeItem('fo_refresh'); localStorage.removeItem('fo_rid'); localStorage.removeItem('fo_rname'); }catch(e){}
+        document.body.innerHTML='<div style="max-width:460px;margin:80px auto;padding:0 22px;text-align:center;font-family:inherit">'+
+          '<div style="font-family:\'Baloo 2\',sans-serif;font-weight:800;font-size:32px;color:#fff">food<span style="background:linear-gradient(90deg,#4ECB99,#9887FF);-webkit-background-clip:text;background-clip:text;color:transparent">ordo</span></div>'+
+          '<h2 style="color:#fff;font-size:22px;margin:22px 0 10px">انتهى اشتراك المطعم</h2>'+
+          '<p style="color:#AEB6C3;font-size:14.5px;line-height:1.9">أُغلقت الجلسة تلقائياً. يرجى إبلاغ صاحب المطعم لتجديد الاشتراك. كل البيانات محفوظة.</p>'+
+          '</div>';
+        return false;
+      }
+      return true;
+    }).catch(function(){ return true; });
+  }
+  function boot(){
+    if(!TOKEN||!RID){ document.getElementById('gate').style.display='block'; return; }
+    document.getElementById('app').style.display='block';
+    document.getElementById('roleTag').textContent = RNAME ? ('الكاشير · '+RNAME) : 'الكاشير';
+    refreshNow(); // تجديد فوري عند بدء التشغيل
+    setInterval(refreshNow, 40*60*1000); // تجديد تلقائي كل 40 دقيقة (قبل انتهاء الجلسة)
+    checkSubscription();
+    setInterval(checkSubscription, 40*60*1000);
+    loadOrders();
+  }
+
+  function loadOrders(){
+    var today=iso(new Date());
+    var cutoff=new Date(Date.now()-15*60000).toISOString();
+    // إلغاء تلقائي لما تجاوز 15 دقيقة بلا دفع
+    gPatch('orders?restaurant_id=eq.'+RID+'&order_date=eq.'+today+'&status=eq.new&created_at=lt.'+encodeURIComponent(cutoff), {status:'cancelled'})
+      .catch(function(){})
+      .then(function(){
+        return gGet('orders?select=id,order_number,total,status,created_at,order_items(product_name,unit_price,quantity,sauces)&restaurant_id=eq.'+RID+'&order_date=eq.'+today+'&order=order_number.asc');
+      })
+      .then(function(rows){ rows=rows||[];
+        all.new=rows.filter(function(o){return o.status==='new';});
+        all.paid=rows.filter(function(o){return o.status==='paid'||o.status==='delivered';});
+        all.cancelled=rows.filter(function(o){return o.status==='cancelled';});
+        document.getElementById('cNew').textContent=all.new.length;
+        document.getElementById('cPaid').textContent=all.paid.length;
+        document.getElementById('cRej').textContent=all.cancelled.length;
+        render();
+      })
+      .catch(function(e){ document.getElementById('list').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; });
+  }
+
+  function setTab(t,el){ curTab=t; var ts=document.querySelectorAll('.tab'); for(var i=0;i<ts.length;i++)ts[i].classList.remove('active'); el.classList.add('active'); render(); }
+
+  function render(){
+    var filter=document.getElementById('q').value.trim();
+    var list=(all[curTab]||[]).filter(function(o){ return !filter || String(o.order_number).indexOf(filter)===0; });
+    var cls = curTab==='new'?'n':(curTab==='paid'?'p':'r');
+    var el=document.getElementById('list');
+    if(!(all[curTab]||[]).length){ el.innerHTML='<div class="empty">لا توجد طلبات في هذا القسم.</div>'; return; }
+    el.innerHTML=list.length? list.map(function(o){
+      var names=(o.order_items||[]).map(function(i){return i.product_name;}).join('، ');
+      var hit=(filter && String(o.order_number)===filter && curTab==='new')?' hit':'';
+      var mut=curTab!=='new'?' mut':'';
+      var totCls=curTab==='paid'?'g':(curTab==='new'?'g':'m');
+      return '<div class="ocard'+hit+mut+'" onclick="openOrder(\''+o.id+'\')"><div class="onum '+cls+'">'+o.order_number+'</div>'+
+        '<div class="oinfo"><b>طلب رقم '+o.order_number+'</b><span>'+(names||'—')+' · '+timeOf(o.created_at)+'</span></div>'+
+        '<div class="otot '+totCls+'">'+(o.total||0)+' دج</div></div>';
+    }).join('') : '<div class="empty">لا يوجد طلب بهذا الرقم.</div>';
+  }
+
+  function askRefund(){
+    hideConfirms();
+    document.getElementById('cfNum').textContent=cur.order_number;
+    document.getElementById('confirmRefBox').className='confirm show';
+  }
+  function doRefund(){
+    var y=document.getElementById('refYes'); y.disabled=true; y.textContent='جارٍ الإلغاء…';
+    gRpc('cancel_paid_order', {p_order_id:cur.id, p_restaurant_id:RID})
+      .then(function(){ finishAction('rej','تم الإلغاء ✓','أُرجعت المواد إلى المخزون، وحُذف الطلب من المبيعات.'); })
+      .catch(function(e){
+        var m=safeErr(e);
+        if(String(e&&e.message||'').indexOf('only paid')>-1) m='لا يمكن إلغاء هذا الطلب — حالته لا تسمح.';
+        document.getElementById('dMsg').textContent=m;
+        document.getElementById('dMsg').className='dmsg err show';
+      })
+      .finally(function(){ y.disabled=false; y.textContent='نعم، ألغِ'; });
+  }
+
+  function openOrder(id){
+    cur=(all[curTab]||[]).find(function(o){return o.id===id;}); if(!cur)return;
+    var cls = curTab==='new'?'n':(curTab==='paid'?'p':'r');
+    var dn=document.getElementById('dNum'); dn.textContent=cur.order_number; dn.className='onum '+cls;
+    document.getElementById('dNum2').textContent=cur.order_number;
+    var label = curTab==='new'?'بانتظار الدفع':(curTab==='paid'?'ممرَّر · مدفوع':'مرفوض / ملغى');
+    document.getElementById('dMeta').textContent='الساعة '+timeOf(cur.created_at)+' · '+label;
+    document.getElementById('dItems').innerHTML=(cur.order_items||[]).map(function(i){
+      return '<div class="li"><div class="n">'+esc(i.product_name)+' × '+i.quantity+(i.sauces?('<small>صلصات: '+esc(i.sauces)+'</small>'):'')+'</div><div class="p">'+(i.unit_price*i.quantity)+' دج</div></div>';
+    }).join('');
+    document.getElementById('dTotal').textContent=cur.total||0;
+    document.getElementById('dMsg').className='dmsg err';
+    hideConfirms();
+    // أزرار الإجراء تظهر فقط للطلبات غير المدفوعة
+    document.getElementById('actions').style.display = curTab==='new'?'block':'none';
+    document.getElementById('paidActions').style.display = curTab==='paid'?'block':'none';
+    document.getElementById('viewOnly').style.display = (curTab==='cancelled')?'block':'none';
+    document.getElementById('detailBody').style.display='block';
+    document.getElementById('paidMsg').className='paidmsg';
+    document.getElementById('modal').classList.add('show');
+  }
+
+  function hideConfirms(){ var rf=document.getElementById('confirmRefBox'); if(rf)rf.className='confirm'; document.getElementById('confirmPayBox').className='confirm'; document.getElementById('confirmRejBox').className='confirm'; document.getElementById('actions').style.display=(curTab==='new')?'block':'none'; }
+  function askPay(){ document.getElementById('cpNum').textContent=cur.order_number; document.getElementById('actions').style.display='none'; document.getElementById('confirmPayBox').className='confirm show'; }
+  function askReject(){ document.getElementById('crNum').textContent=cur.order_number; document.getElementById('actions').style.display='none'; document.getElementById('confirmRejBox').className='confirm show'; }
+
+  function doPay(){
+    if(!cur)return;
+    var y=document.getElementById('payYes'); y.disabled=true; y.textContent='جارٍ…';
+    gRpc('pay_order_checked', {p_order_id:cur.id, p_restaurant_id:RID})
+      .then(function(){ finishAction('ok','تم الدفع ✓','خُصم المخزون ومُرِّر الطلب إلى المطبخ.'); })
+      .catch(function(e){
+        var m=safeErr(e)+'', t;
+        var k=m.indexOf('insufficient stock:');
+        if(k>-1){ var names=m.slice(k+19).split('"')[0].replace(/[}\\]/g,'').trim(); t='لا يمكن الدفع — نفد المخزون من: '+names+'. أبلغ صاحب المطعم.'; }
+        else t='تعذّر الدفع: '+m;
+        document.getElementById('dMsg').textContent=t; document.getElementById('dMsg').className='dmsg err show';
+      })
+      .finally(function(){ y.disabled=false; y.textContent='نعم، مرّر'; });
+  }
+  function doReject(){
+    if(!cur)return;
+    var y=document.getElementById('rejYes'); y.disabled=true; y.textContent='جارٍ…';
+    gPatch('orders?id=eq.'+cur.id, {status:'cancelled'})
+      .then(function(){ finishAction('no','تم الرفض','أُلغي الطلب ولن يُمرَّر للمطبخ.'); })
+      .catch(function(e){ document.getElementById('dMsg').textContent='تعذّر الرفض: '+safeErr(e); document.getElementById('dMsg').className='dmsg err show'; })
+      .finally(function(){ y.disabled=false; y.textContent='نعم، ارفض'; });
+  }
+  var CHK='<svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg>';
+  var XIC='<svg viewBox="0 0 24 24"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7l1.4-1.4L10.6 10.6l6.3-6.3z"/></svg>';
+  function finishAction(kind,title,subv){
+    document.getElementById('detailBody').style.display='none';
+    document.getElementById('pmIc').innerHTML = kind==='ok'?CHK:XIC;
+    document.getElementById('pmTitle').textContent=title;
+    document.getElementById('pmSub').textContent=subv;
+    document.getElementById('paidMsg').className='paidmsg show '+kind;
+    loadOrders();
+  }
+  function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+
+  boot();
+</script>
+</body>
+</html>
