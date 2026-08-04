@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>foodordo — لوحة التاجر</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0F1116;--bg2:#141822;--card:#191C24;--line:#2A2F3A;--text:#F3F5F8;--muted:#AEB6C3;
+        --orange1:#FBA255;--orange2:#F0762E;--green1:#4ECB99;--green2:#2FB07F;--purple1:#9887FF;--purple2:#7A6BF5;--blue1:#5C9BFF;--blue2:#3D74E6;--amber:#F3C969;--red:#FF6B6B;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:"Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:radial-gradient(120% 40% at 50% -8%, #1B2130 0%, var(--bg) 55%);min-height:100vh;padding-bottom:44px}
+  .wrap{max-width:600px;margin:0 auto;padding:0 18px}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:22px 0 6px}
+  .brand{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:24px;letter-spacing:-1px;background:linear-gradient(90deg,#fff 45%,var(--green1) 70%,var(--purple1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .role{font-size:12.5px;font-weight:800;color:var(--green1);background:#12251C;border:1px solid #1E4A32;padding:6px 12px;border-radius:999px}
+  .h1{font-weight:800;font-size:21px;margin:8px 0 2px}
+  .sub{color:var(--muted);font-size:13.5px;font-weight:500;margin-bottom:16px}
+  .tabs{display:flex;gap:7px;margin-bottom:18px}
+  .tab{flex:1;text-align:center;padding:11px 4px;border-radius:12px;font-weight:800;font-size:12.5px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--muted);transition:.15s}
+  .tab.active{color:#fff}
+  .tab.active.t0{background:linear-gradient(150deg,rgba(240,118,46,.22),transparent);border-color:var(--orange2)}
+  .tab.active.t1{background:linear-gradient(150deg,rgba(122,107,245,.22),transparent);border-color:var(--purple2)}
+  .tab.active.t2{background:linear-gradient(150deg,rgba(47,176,127,.22),transparent);border-color:var(--green2)}
+  .tab.active.t3{background:linear-gradient(150deg,rgba(61,116,230,.22),transparent);border-color:var(--blue2)}
+  .tab.active.t4{background:linear-gradient(150deg,rgba(243,201,105,.22),transparent);border-color:var(--amber)}
+  .tab.active.t5{background:linear-gradient(150deg,rgba(92,155,255,.22),transparent);border-color:var(--blue1)}
+  .launch{display:flex;align-items:center;gap:14px;width:100%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer;text-align:right;font-family:inherit;transition:.15s}
+  .launch:active{transform:scale(.99)}
+  .launch .ic{width:50px;height:50px;flex:0 0 50px;border-radius:14px;display:grid;place-items:center}
+  .launch .ic svg{width:26px;height:26px;fill:#fff}
+  .launch .t{flex:1}
+  .launch .t b{display:block;color:#fff;font-size:16px;font-weight:800}
+  .launch .t span{color:var(--muted);font-size:12.5px;font-weight:600}
+  .launch .arw{color:var(--muted);font-size:22px;font-weight:800}
+  .tabs{flex-wrap:wrap}
+  .mstat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:14px}
+  .mstat .b{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 8px;text-align:center}
+  .mstat .b span{display:block;color:var(--muted);font-size:11.5px;font-weight:700}
+  .mstat .b b{display:block;font-size:22px;font-weight:800;margin-top:5px;font-family:"Baloo 2",sans-serif}
+  .mo{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:9px}
+  .mo .n b{color:#fff;font-size:14.5px;font-weight:800}
+  .mo .n span{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-top:2px}
+  .mo .a{font-weight:800;font-size:14px;white-space:nowrap}
+  .pane{display:none;animation:fade .3s both}
+  .pane.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .card h3{font-size:15px;font-weight:800;margin-bottom:6px;color:#fff;display:flex;align-items:center;gap:8px}
+  .card h3 .d{width:9px;height:9px;border-radius:50%}
+  .hint{color:#7C8497;font-size:12.5px;font-weight:600;margin-bottom:12px;line-height:1.7}
+  .empty{text-align:center;color:#6C7484;font-weight:600;padding:24px 0;font-size:14px}
+  label{display:block;font-weight:700;font-size:13px;margin:12px 0 6px;color:#E6E9EF}
+  input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;font-family:inherit;font-size:14px;background:var(--bg2);color:#fff}
+  input:focus,select:focus{outline:none;border-color:var(--purple1)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{display:block;width:100%;margin-top:14px;border:0;cursor:pointer;padding:12px;border-radius:12px;font-family:inherit;font-weight:800;font-size:14px;color:#fff;background:linear-gradient(90deg,var(--green2),var(--purple2));transition:transform .15s}
+  .btn:disabled{opacity:.6}
+  .btn.soft{background:var(--bg2);border:1px solid var(--line);color:#CDD4E0;margin-top:10px}
+  .upload{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;padding:14px;border:1.5px dashed #39414F;border-radius:12px;background:var(--bg2);color:var(--muted);font-weight:700;font-size:13.5px;cursor:pointer}
+  .upload svg{width:18px;height:18px;fill:currentColor}
+  .fname{color:var(--green1);font-size:12.5px;font-weight:700;margin-top:8px;display:none}
+  .fname.show{display:block}
+  .msg{display:none;font-weight:700;font-size:13px;padding:10px 12px;border-radius:11px;margin-top:12px;line-height:1.6}
+  .msg.show{display:block}
+  .msg.ok{color:var(--green1);background:#12251C;border:1px solid #1E4A32}
+  .msg.err{color:var(--red);background:#2A1618;border:1px solid #4A2224}
+  .item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-top:9px}
+  .item .info b{color:#fff;font-size:14.5px;font-weight:800;display:block}
+  .item .info span{color:var(--muted);font-size:12.5px;font-weight:600}
+  .item .rgt{text-align:left;white-space:nowrap}
+  .item .rgt b{color:#fff;font-size:14px;font-weight:800;display:block}
+  .item .rgt span{color:var(--muted);font-size:11.5px;font-weight:700}
+  .pill{font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;color:var(--purple1);background:#20213A;border:1px solid #3A2E52}
+  .pill.g{color:var(--green1);background:#12251C;border-color:#1E4A32}
+  .pill.o{color:var(--orange1);background:#2C2612;border-color:#40371A}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .chip{display:flex;align-items:center;gap:7px;background:#20213A;border:1px solid #3A2E52;color:#DCD8F5;font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px}
+  .chip x{cursor:pointer;color:#9E96C8;font-weight:800}
+  .seg{display:flex;gap:8px;margin-top:6px}
+  .segb{flex:1;padding:11px;border-radius:11px;font-family:inherit;font-weight:800;font-size:13.5px;cursor:pointer;border:1px solid var(--line);background:var(--bg2);color:var(--muted)}
+  .segb.on{border-color:var(--green2);background:#12251C;color:var(--green1)}
+  .rategrid{display:grid;gap:9px;margin-top:8px}
+  .rateln{display:flex;align-items:center;gap:10px}
+  .rateln .nm{flex:1;font-size:13.5px;font-weight:700;color:#E6E9EF}
+  .rateln input{width:120px}
+  .period{display:flex;gap:8px;margin-bottom:16px}
+  .pbtn{flex:1;padding:10px 4px;border-radius:11px;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+  .pbtn.active{border-color:var(--blue2);background:#141F33;color:var(--blue1)}
+  .daterange{display:none;gap:8px;margin-bottom:16px}
+  .daterange.show{display:grid;grid-template-columns:1fr 1fr auto}
+  .daterange .fld span{font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px}
+  .daterange .apply{align-self:end;border:0;cursor:pointer;background:linear-gradient(90deg,var(--blue2),var(--purple2));color:#fff;font-family:inherit;font-weight:800;font-size:13px;padding:11px 14px;border-radius:11px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .stat{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center}
+  .stat span{display:block;color:var(--muted);font-size:12px;font-weight:700}
+  .stat b{display:block;font-size:18px;font-weight:800;color:#fff;margin-top:5px}
+  .stat b.g{color:var(--green1)}
+  .row{display:flex;justify-content:space-between;font-size:13.5px;padding:2px 0}
+  .row .k{color:var(--muted);font-weight:600}
+  .row .v{color:#E6E9EF;font-weight:700}
+  .gate{max-width:460px;margin:80px auto;text-align:center;padding:0 22px}
+  .wrow{background:var(--bg2);border:1px solid var(--line);border-radius:12px;margin-top:9px;overflow:hidden}
+  .whead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px;cursor:pointer}
+  .whead .info b{color:#fff;font-size:14.5px;font-weight:800;display:block}
+  .whead .info span{color:var(--muted);font-size:12.5px;font-weight:600}
+  .wdet{display:none;border-top:1px solid var(--line);padding:13px;background:#12151C}
+  .wdet.show{display:block}
+  .modalbg{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+  .modalbg.show{display:flex}
+  .modalbox{background:#191C24;border:1px solid #2A2F3A;border-radius:20px;padding:20px;max-width:420px;width:100%;max-height:80vh;overflow:auto}
+  .modalbox h4{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}
+  .modalbox .msub{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:14px}
+  .modalbox .tot{display:flex;justify-content:space-between;font-size:15px;font-weight:800;border-top:1px solid #2A2F3A;margin-top:10px;padding-top:10px}
+  .arw{position:absolute;left:0;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;transition:.2s}
+  .arw.up{transform:translateY(-50%) rotate(180deg)}
+  .drow{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0}
+  .drow .k{color:var(--muted);font-weight:600}
+  .drow .v{color:#E6E9EF;font-weight:700}
+  .wact{display:flex;gap:8px;margin-top:12px}
+  .wact button{flex:1;border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:13px;padding:10px;border-radius:10px}
+  .wedit{background:#1B2740;border:1px solid #2E4370;color:var(--blue1)}
+  .wdel{background:#2A1618;border:1px solid #4A2224;color:#FF8A8A}
+  .wconfirm{margin-top:10px;background:#0F1116;border:1px solid var(--line);border-radius:10px;padding:11px;display:none}
+  .wconfirm.show{display:block}
+  .wconfirm p{font-size:13px;font-weight:800;color:#fff;text-align:center;margin-bottom:9px}
+  .wconfirm .cb{display:flex;gap:8px}
+  .wconfirm .cb button{flex:1;border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:13px;padding:9px;border-radius:9px}
+  .wconfirm .cy{background:var(--red);color:#fff}
+  .wconfirm .cy.edit{background:var(--blue2)}
+  .wconfirm .cn{background:#242A36;color:#CDD4E0}
+</style>
+<script>
+  // حماية من Clickjacking — بلا كسر المتصفّحات المدمجة (واتساب/فيسبوك/المعاينة)
+  // نحاول الخروج من الإطار فقط، ولا نمسح الصفحة أبداً إن تعذّر ذلك.
+  (function(){
+    try{
+      if (window.top !== window.self && window.top.location.origin !== window.self.location.origin) {
+        window.top.location = window.self.location.href;
+      }
+    }catch(e){ /* متصفّح مدمج أو منع أمني — نتجاهل بلا تعطيل الصفحة */ }
+  })();
+</script>
+</head>
+<body>
+
+<div id="gate" class="gate" style="display:none">
+  <div class="brand" style="font-size:30px">foodordo</div>
+  <h2 class="h1" style="text-align:center;margin-top:16px">افتح لوحتك من صفحة الدخول</h2>
+  <p class="sub" style="text-align:center">هذه اللوحة تُفتح بعد تسجيل الدخول من صفحة مطعمك. سجّل الدخول أولاً.</p>
+  <button onclick="location.href='foodordo-welcome-connected.html'" style="display:block;width:100%;max-width:300px;margin:20px auto 0;border:0;cursor:pointer;padding:15px;border-radius:14px;font-family:inherit;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(90deg,var(--green2),var(--purple2))">الذهاب لتسجيل الدخول</button>
+</div>
+
+<div id="app" class="wrap" style="display:none">
+  <div class="top"><div class="brand">foodordo</div><div style="display:flex;gap:8px;align-items:center"><button onclick="logout()" style="background:#2A1618;border:1px solid #4A2224;color:#FF8A8A;font-family:inherit;font-weight:800;font-size:12px;padding:7px 13px;border-radius:999px;cursor:pointer">خروج</button><div class="role" id="roleTag">لوحة التاجر</div></div></div>
+  <div id="trialBanner" style="display:none;background:linear-gradient(150deg,#2A2416,#1B1A14);border:1px solid #4A4222;border-radius:16px;padding:14px 16px;margin-bottom:14px">
+    <div style="font-weight:800;color:#F3C969;font-size:14.5px" id="trialTxt"></div>
+    <div class="hint" style="margin-top:4px">بياناتك محفوظة بالكامل — اشترك للمتابعة بلا انقطاع.</div>
+    <button class="btn" style="margin-top:10px" onclick="location.href='foodordo-welcome-connected.html?subscribe=1'">اشترك الآن</button>
+  </div>
+
+  <div class="h1">إدارة مطعمك</div>
+  <div class="sub">تحكّم في المخزون، المنتجات، العمّال، وتابع تقاريرك.</div>
+
+  <div class="tabs">
+    <div class="tab t0 active" onclick="tab(0,this)">المخزون</div>
+    <div class="tab t1" onclick="tab(1,this)">المنتجات</div>
+    <div class="tab t2" onclick="tab(2,this)">العمّال</div>
+    <div class="tab t3" onclick="tab(3,this)">التقارير</div>
+    <div class="tab t4" onclick="tab(4,this)">متابعة</div>
+    <div class="tab t5" onclick="tab(5,this)">الشاشات</div>
+  </div>
+
+  <!-- المخزون -->
+  <div class="pane active" id="pane0">
+    <div class="card">
+      <h3><span class="d" style="background:var(--orange2)"></span> إضافة مادة</h3>
+      <div class="hint">المواد الأولية ومواد التغليف التي تُصنع منها منتجاتك.</div>
+      <label>اسم المادة</label><input id="mName" placeholder="مثال: دقيق" />
+      <div class="two">
+        <div><label>وحدة القياس</label><select id="mUnit"><option>كغ</option><option>غ</option><option>لتر</option><option>مل</option><option>قطعة</option><option>علبة</option></select></div>
+        <div><label>سعر الوحدة (دج)</label><input id="mPrice" type="number" placeholder="0" /></div>
+      </div>
+      <label>الكمية الحالية</label><input id="mQty" type="number" placeholder="0" />
+      <div class="seg" style="margin-top:14px"><button class="segb on" id="msNo" onclick="matSell(false)">مادة أوّلية</button><button class="segb" id="msYes" onclick="matSell(true)">سلعة تجارية</button></div>
+      <div id="mSellBox" style="display:none">
+        <div class="hint" style="margin:10px 0">سلعة تشتريها وتبيعها كما هي (مشروب، ماء، علبة…). ستظهر للزبون في قائمة الطلب، وتُخصم من مخزونك تلقائياً عند البيع.</div>
+        <div class="two">
+          <div><label>سعر البيع للزبون (دج)</label><input id="mSellPrice" type="number" placeholder="0" /></div>
+          <div><label>الصورة</label>
+            <label class="upload" for="mImg"><svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 .7.3l4 4a1 1 0 0 1-1.4 1.4L13 6.4V15a1 1 0 0 1-2 0V6.4L8.7 8.7a1 1 0 0 1-1.4-1.4l4-4A1 1 0 0 1 12 3ZM5 15a1 1 0 0 1 1 1v3h12v-3a1 1 0 0 1 2 0v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1Z"/></svg><span>ارفع صورة</span></label>
+            <input id="mImg" type="file" accept="image/*" style="display:none" onchange="showMatImg(this)" /></div>
+        </div>
+        <div id="mImgName" class="fname"></div>
+        <label>القسم / التصنيف</label>
+        <select id="mCat"><option value="">— بلا تصنيف —</option></select>
+        <div class="hint" style="margin:8px 0 4px">لا يوجد القسم المناسب؟ أنشئه هنا (سيوضع داخل القسم المحدّد أعلاه، أو رئيسياً إن لم تختر شيئاً).</div>
+        <div class="two"><input id="mNewCat" placeholder="مثال: غازية" /><button class="btn soft" onclick="quickCat()">إنشاء قسم</button></div>
+      </div>
+      <button class="btn" id="mBtn" onclick="addMaterial()">حفظ المادة</button>
+      <button class="btn soft" id="mCancel" style="display:none" onclick="cancelEditMat()">إلغاء التعديل</button>
+      <div id="mMsg" class="msg"></div>
+    </div>
+    <div class="card"><h3><span class="d" style="background:var(--orange2)"></span> المخزون الحالي</h3><div id="matList"><div class="empty">جارٍ التحميل…</div></div></div>
+  </div>
+
+  <!-- المنتجات -->
+  <div class="pane" id="pane1">
+    <div class="card">
+      <h3><span class="d" style="background:var(--blue2)"></span> الأقسام والتصنيفات</h3>
+      <div class="hint" style="margin-bottom:12px">نظّم قائمتك كما تريد: قسم رئيسي (مثل المشروبات) قد يحتوي تصنيفات (غازية، عصائر)، وكل تصنيف قد يحتوي تصنيفات أخرى أو منتجات.</div>
+      <label>يوضع داخل</label>
+      <select id="catParent"><option value="">— قسم رئيسي —</option></select>
+      <label>الاسم</label><input id="catName" placeholder="مثال: المشروبات / غازية / شاورما" />
+      <div class="two">
+        <div><label>الصورة (اختياري)</label>
+          <label class="upload" for="catImg"><svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 .7.3l4 4a1 1 0 0 1-1.4 1.4L13 6.4V15a1 1 0 0 1-2 0V6.4L8.7 8.7a1 1 0 0 1-1.4-1.4l4-4A1 1 0 0 1 12 3ZM5 15a1 1 0 0 1 1 1v3h12v-3a1 1 0 0 1 2 0v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1Z"/></svg><span>ارفع صورة</span></label>
+          <input id="catImg" type="file" accept="image/*" style="display:none" onchange="showCatImg(this)" /></div>
+        <div><label>الصلصات</label>
+          <div class="seg"><button class="segb on" id="csYes" onclick="catSauce(false)">تظهر</button><button class="segb" id="csNo" onclick="catSauce(true)">لا تظهر</button></div></div>
+      </div>
+      <div id="catImgName" class="fname"></div>
+      <button class="btn" id="catBtn" onclick="addCategory()">حفظ القسم</button>
+      <div id="catMsg" class="msg"></div>
+      <div id="catTree" style="margin-top:14px"></div>
+    </div>
+    <div class="card">
+      <h3><span class="d" style="background:var(--purple2)"></span> إضافة منتج</h3>
+      <div class="hint">المنتج يُكوَّن من مواد المخزون التي تُطرح تلقائياً عند البيع.</div>
+      <label>اسم المنتج</label><input id="pName" placeholder="مثال: بيتزا مارغريتا" />
+      <div class="two">
+        <div><label>السعر (دج)</label><input id="pPrice" type="number" placeholder="0" /></div>
+        <div><label>الصورة</label>
+          <label class="upload" for="pImg"><svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 .7.3l4 4a1 1 0 0 1-1.4 1.4L13 6.4V15a1 1 0 0 1-2 0V6.4L8.7 8.7a1 1 0 0 1-1.4-1.4l4-4A1 1 0 0 1 12 3ZM5 15a1 1 0 0 1 1 1v3h12v-3a1 1 0 0 1 2 0v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1Z"/></svg><span>ارفع صورة</span></label>
+          <input id="pImg" type="file" accept="image/*" style="display:none" onchange="showImg(this)" /></div>
+      </div>
+      <div id="pImgName" class="fname"></div>
+      <label>القسم / التصنيف</label>
+      <select id="pCat"><option value="">— بلا تصنيف —</option></select>
+      <label>مكوّنات المنتج (من المخزون)</label>
+      <div class="two"><select id="ingMat"><option value="">اختر مادة…</option></select><input id="ingQty" type="number" placeholder="الكمية" /></div>
+      <button class="btn soft" onclick="addIngredient()">أضف مكوّناً</button>
+      <div id="ingChips" class="chips"></div>
+      <div id="ingCost" class="hint" style="margin-top:6px"></div>
+      <button class="btn" id="pBtn" onclick="addProduct()">حفظ المنتج</button>
+      <button class="btn soft" id="pCancel" style="display:none" onclick="cancelEditProd()">إلغاء التعديل</button>
+      <div id="pMsg" class="msg"></div>
+    </div>
+    <div class="card"><h3><span class="d" style="background:var(--purple2)"></span> المنتجات</h3><div id="prodList"><div class="empty">جارٍ التحميل…</div></div></div>
+  </div>
+
+  <!-- العمّال -->
+  <div class="pane" id="pane2">
+    <div class="card">
+      <h3><span class="d" style="background:var(--green2)"></span> إضافة عامل</h3>
+      <label>اسم العامل</label><input id="wName" placeholder="الاسم الكامل" />
+      <label>نوع العامل / الوظيفة</label><input id="wRole" placeholder="مثال: طاهٍ، كاشير" />
+      <label>نوع الأجر</label>
+      <div class="seg"><button class="segb on" id="segFixed" onclick="wageType('fixed')">ثابت</button><button class="segb" id="segVar" onclick="wageType('var')">متغيّر</button></div>
+      <div id="fixedBox"><label>قيمة الأجر اليومي (دج)</label><input id="wDaily" type="number" placeholder="0" /></div>
+      <div id="varBox" style="display:none">
+        <label>طريقة الأجر المتغيّر</label>
+        <div class="seg"><button class="segb on" id="vmUni" onclick="varMode('unified')">سعر موحّد</button><button class="segb" id="vmPer" onclick="varMode('per')">سعر لكل منتج</button></div>
+        <div id="uniBox"><label>الأجر لكل قطعة — يُطبَّق على كل المنتجات (دج)</label><input id="wUni" type="number" placeholder="0" /></div>
+        <div id="perBox" style="display:none"><label>الأجر لكل قطعة من كل منتج (دج)</label><div id="varRates" class="rategrid"><div class="empty">أضف منتجات أولاً.</div></div></div>
+      </div>
+      <button class="btn" id="wBtn" onclick="saveWorker()">حفظ العامل</button>
+      <button class="btn soft" id="wCancel" onclick="cancelEdit()" style="display:none">إلغاء التعديل</button>
+      <div id="wMsg" class="msg"></div>
+    </div>
+    <div class="card"><h3><span class="d" style="background:var(--green2)"></span> العمّال</h3><div id="wkList"><div class="empty">جارٍ التحميل…</div></div></div>
+  </div>
+
+  <!-- التقارير -->
+  <div class="pane" id="pane3">
+    <div class="period">
+      <button class="pbtn active" onclick="setPeriod('اليوم',this)">اليوم</button>
+      <button class="pbtn" onclick="setPeriod('الأسبوع',this)">الأسبوع</button>
+      <button class="pbtn" onclick="setPeriod('الشهر',this)">الشهر</button>
+      <button class="pbtn" onclick="setPeriod('مخصّص',this)">مخصّص</button>
+    </div>
+    <div class="daterange" id="dateRange">
+      <div class="fld"><span>من تاريخ</span><input type="date" id="dFrom" /></div>
+      <div class="fld"><span>إلى تاريخ</span><input type="date" id="dTo" /></div>
+      <button class="apply" onclick="applyRange()">بحث</button>
+    </div>
+    <div class="card">
+      <h3><span class="d" style="background:var(--blue2)"></span> ملخّص <span id="periodLabel">اليوم</span></h3>
+      <div class="stats">
+        <div class="stat"><span>المبيعات</span><b class="g" id="rSales">0 دج</b></div>
+        <div class="stat"><span>عدد الطلبات</span><b id="rOrders">0</b></div>
+        <div class="stat"><span>أجور العمّال</span><b id="rWages">0 دج</b></div>
+        <div class="stat"><span>الأرباح</span><b class="g" id="rProfit">0 دج</b></div>
+      </div>
+      <div class="hint" style="margin-top:12px">تُحسب من الطلبات المدفوعة. الأرباح = المبيعات − تكلفة المواد − الأجور. (الأجور الثابتة تُحسب يوماً بيوم حسب الفترة.)</div>
+    </div>
+    <div class="card"><h3><span class="d" style="background:var(--blue2)"></span> المنتجات الأكثر مبيعاً</h3><div id="rBest"><div class="empty">لا توجد مبيعات في هذه الفترة بعد.</div></div></div>
+    <div class="card"><h3><span class="d" style="background:var(--orange2)"></span> المواد المستهلكة من المخزون</h3><div id="rCons"><div class="empty">لا يوجد استهلاك في هذه الفترة بعد.</div></div></div>
+  </div>
+
+  <!-- المتابعة المباشرة -->
+  <div class="pane" id="pane4">
+    <div class="mstat">
+      <div class="b"><span>ينتظر الدفع</span><b style="color:var(--amber)" id="mWait">0</b></div>
+      <div class="b"><span>قيد التحضير</span><b style="color:var(--purple1)" id="mCook">0</b></div>
+      <div class="b"><span>سُلّم اليوم</span><b style="color:var(--green1)" id="mDone">0</b></div>
+    </div>
+    <div style="text-align:left;margin-bottom:10px"><button class="btn soft" style="width:auto;display:inline-block;margin:0;padding:8px 16px;font-size:12.5px" onclick="loadMonitor()">تحديث ↻</button></div>
+    <div class="card"><h3><span class="d" style="background:var(--amber)"></span> عند الكاشير — بانتظار الدفع</h3><div id="monWait"><div class="empty">جارٍ التحميل…</div></div></div>
+    <div class="card"><h3><span class="d" style="background:var(--purple2)"></span> في المطبخ — قيد التحضير</h3><div id="monCook"><div class="empty">—</div></div></div>
+    <div class="card"><h3><span class="d" style="background:var(--green2)"></span> سُلّم اليوم</h3><div id="monDone"><div class="empty">—</div></div></div>
+    <div class="hint">للعرض فقط — الدفع من شاشة الكاشير، والتسليم من شاشة المطبخ.</div>
+  </div>
+
+  <!-- شاشات المحل -->
+  <div class="pane" id="pane5">
+    <div class="card" style="margin-bottom:16px">
+      <h3><span class="d" style="background:var(--green2)"></span> دخول الكاشير والمطبخ</h3>
+      <div class="hint" style="margin-bottom:12px">حساب منفصل عن حسابك — يستطيع استلام الطلبات وتسليمها فقط، ولا يرى المخزون أو التقارير أو الأرباح.</div>
+      <div id="staffInfo"></div>
+      <div id="staffForm">
+        <label>البريد الإلكتروني لحساب الموظّفين</label>
+        <input id="stfEmail" type="email" inputmode="email" placeholder="staff@example.com" />
+        <label>كلمة السر</label>
+        <input id="stfPass" type="password" placeholder="6 أحرف على الأقل" />
+        <button class="btn" onclick="saveStaff()" id="stfBtn">حفظ حساب الموظّفين</button>
+        <div id="stfMsg" class="msg"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h3><span class="d" style="background:var(--green2)"></span> نسخة احتياطية</h3>
+      <div class="hint" style="margin-bottom:12px">نزّل نسخة من كل بياناتك (المخزون، المنتجات، الأقسام، العمّال، الطلبات) كملف واحد. احفظه في مكان آمن، وكرّره أسبوعياً.</div>
+      <button class="btn" id="bkBtn" onclick="downloadBackup()">تنزيل نسخة احتياطية</button>
+      <div id="bkMsg" class="msg"></div>
+    </div>
+    <div class="hint" style="margin-bottom:14px">افتح شاشات المحل على أجهزتها. كل زر يفتح الشاشة في تبويب جديد حاملاً معرّف مطعمك تلقائياً — بلا نسخ يدوي.</div>
+    <button class="launch" onclick="openScreen('customer')">
+      <span class="ic" style="background:linear-gradient(150deg,var(--orange1),var(--orange2))"><svg viewBox="0 0 24 24"><path d="M8.5 3a1 1 0 0 1 1 1v5.5a2.5 2.5 0 0 1-1.5 2.29V21a1 1 0 1 1-2 0v-9.21A2.5 2.5 0 0 1 4.5 9.5V4a1 1 0 1 1 2 0v5.5a.5.5 0 0 0 1 0V4a1 1 0 0 1 1-1Zm8 0a3.5 3.5 0 0 1 3.5 3.5c0 1.6-.9 2.98-2.2 3.32V21a1 1 0 1 1-2 0V9.82C14.4 9.48 13.5 8.1 13.5 6.5A3.5 3.5 0 0 1 16.5 3Z"/></svg></span>
+      <span class="t"><b>شاشة الزبون</b><span>على تابلت المحل — لإنشاء الطلبات</span></span><span class="arw">‹</span>
+    </button>
+    <button class="launch" onclick="openScreen('cashier')">
+      <span class="ic" style="background:linear-gradient(150deg,var(--green1),var(--green2))"><svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6Zm9 2.5A3.5 3.5 0 1 0 15.5 12 3.5 3.5 0 0 0 12 8.5Z"/></svg></span>
+      <span class="t"><b>شاشة الكاشير</b><span>على جهاز الصندوق — لاستلام الدفع</span></span><span class="arw">‹</span>
+    </button>
+    <button class="launch" onclick="openScreen('kitchen')">
+      <span class="ic" style="background:linear-gradient(150deg,var(--purple1),var(--purple2))"><svg viewBox="0 0 24 24"><path d="M7 21a1 1 0 0 1-1-1v-4h12v4a1 1 0 0 1-1 1H7Zm5-18a5 5 0 0 1 4.9 4.02A4 4 0 0 1 16.5 15h-9A4 4 0 0 1 7.1 7.02 5 5 0 0 1 12 3Z"/></svg></span>
+      <span class="t"><b>شاشة المطبخ</b><span>على شاشة الطهاة — للتحضير والتسليم</span></span><span class="arw">‹</span>
+    </button>
+  </div>
+</div>
+
+<div class="modalbg" id="detailBg" onclick="closeDetail(event)">
+  <div class="modalbox" onclick="event.stopPropagation()">
+    <h4 id="dtName"></h4>
+    <div class="msub" id="dtSub"></div>
+    <div id="dtRows"></div>
+    <div class="tot"><span>التكلفة الإجمالية</span><span id="dtCost" style="color:#F3C969"></span></div>
+    <div class="tot"><span>سعر البيع</span><span id="dtPrice" style="color:#4ECB99"></span></div>
+    <div class="tot"><span>هامش الربح</span><span id="dtMargin"></span></div>
+    <div class="wact" style="margin-top:14px" id="dtActions"></div>
+    <div class="wconfirm" id="dtConfirm"></div>
+    <button class="btn soft" style="margin-top:10px" onclick="closeDetail()">إغلاق</button>
+  </div>
+</div>
+
+
+
+<script>
+  var DEBUG_ERR = (location.search||'').indexOf('debug=1') > -1;
+  // ===== حماية من XSS: تهريب أي نصّ قادم من المستخدم قبل عرضه =====
+  // ===== رسائل أخطاء آمنة: لا نكشف تفاصيل قاعدة البيانات للمستخدم =====
+  function safeErr(e){
+    var m = String((e && e.message) || e || '');
+    // وضع التشخيص: أضف ?debug=1 إلى الرابط لرؤية الخطأ التقني كاملاً
+    if(DEBUG_ERR) return 'خطأ تقني: ' + m.slice(0,400);
+    if(!m) return 'تعذّر إتمام العملية — لم يردّ الخادم برسالة.';
+    // رسائلنا العربية تمرّ كما هي — لا تُخفى خلف رسالة عامة
+    if(/[\u0600-\u06FF]/.test(m)) return m;
+    if(m.indexOf('rate limit')>-1)          return 'الخدمة مزدحمة حالياً، حاول بعد لحظات.';
+    if(m.indexOf('insufficient stock:')>-1) return 'نفد المخزون من: ' + esc(m.split('insufficient stock:')[1].split('"')[0].replace(/[}\\]/g,'').trim());
+    if(m.indexOf('daily limit')>-1)         return 'اكتمل الحدّ الأقصى للطلبات اليوم.';
+    if(m.indexOf('invalid product')>-1)     return 'أحد المنتجات لم يعد متاحاً. حدّث القائمة.';
+    if(m.indexOf('empty order')>-1)         return 'الطلب فارغ.';
+    if(m.indexOf('does not belong')>-1)     return 'هذا الطلب لا يخصّ مطعمك.';
+    if(m.indexOf('materials_qty_non_negative')>-1) return 'الكمية غير كافية في المخزون.';
+    if(m.indexOf('chk_')>-1 || m.indexOf('char_length')>-1) return 'أحد الحقول أطول من المسموح. اختصره.';
+    if(m.indexOf('duplicate key')>-1)       return 'هذا العنصر مسجّل مسبقاً.';
+    if(m.indexOf('violates foreign key')>-1)return 'لا يمكن تنفيذ العملية — العنصر مرتبط ببيانات أخرى.';
+    if(m.indexOf('row-level security')>-1 || m.indexOf('permission denied')>-1) return 'لا تملك صلاحية هذه العملية.';
+    if(m.indexOf('JWT')>-1 || m.indexOf('PGRST303')>-1) return 'انتهت الجلسة، سجّل الدخول من جديد.';
+    if(m.indexOf('Failed to fetch')>-1 || m.indexOf('NetworkError')>-1) return 'تعذّر الاتصال — تحقّق من الإنترنت.';
+    // خطأ غير معروف: نستخرج رمزه (غير حسّاس) لتسهيل التشخيص بدل إخفائه تماماً
+    var code='';
+    var mm = m.match(/"code"\s*:\s*"([^"]+)"/);
+    if(mm) code = mm[1];
+    var byCode = {
+      '42501':'لا تملك صلاحية هذه العملية.',
+      '42P01':'جدول غير موجود في الخادم.',
+      '42883':'دالة غير موجودة في الخادم.',
+      '23503':'لا يمكن تنفيذ العملية — العنصر مرتبط ببيانات أخرى.',
+      '23505':'هذا العنصر مسجّل مسبقاً.',
+      '23514':'إحدى القيم غير مقبولة.',
+      '22P02':'إحدى القيم بصيغة غير صحيحة.',
+      'PGRST202':'هذه العملية غير متاحة في الخادم (دالة ناقصة).',
+      'PGRST204':'حقل غير موجود في الخادم — حدّث الصفحة.',
+      'PGRST301':'انتهت الجلسة، سجّل الدخول من جديد.'
+    };
+    if(byCode[code]) return byCode[code];
+    return 'تعذّر إتمام العملية.' + (code ? ' (رمز: ' + code + ')' : '');
+  }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var SUPABASE_URL='https://tflmkscxuvznpvidcgff.supabase.co';
+  var SUPABASE_KEY='sb_publishable_P210ESDiwZnLYYqTu4rc3A_s5C-xHuh';
+  var REST=SUPABASE_URL+'/rest/v1/';
+  var AUTH=SUPABASE_URL+'/auth/v1/';
+  function refreshNow(){
+    var rt=null; try{ rt=localStorage.getItem('fo_refresh'); }catch(e){}
+    if(!rt) return Promise.resolve(false);
+    return fetch(AUTH+'token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:rt})})
+      .then(function(r){ if(!r.ok) return false; return r.json().then(function(d){ if(d.access_token){ TOKEN=d.access_token; try{ localStorage.setItem('fo_token',d.access_token); if(d.refresh_token)localStorage.setItem('fo_refresh',d.refresh_token); }catch(e){} return true; } return false; }); })
+      .catch(function(){ return false; });
+  }
+  function onAuthFail(r,t){ if(r.status===401 || (t&&(t.indexOf('JWT expired')>-1||t.indexOf('PGRST303')>-1))){ refreshNow().then(function(ok){ if(ok){ location.reload(); } else { logout(); } }); return true; } return false; }
+  function H(x){ var h={apikey:SUPABASE_KEY,Authorization:'Bearer '+(TOKEN||SUPABASE_KEY)}; if(x){for(var k in x)h[k]=x[k];} return h; }
+  function gRpc(fn,b){ return fetch(REST+'rpc/'+fn,{method:'POST',headers:H({'Content-Type':'application/json'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); return r.json(); }); }
+  function gGet(p){ return fetch(REST+p,{headers:H()}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); return r.json(); }); }
+  function gPost(p,b){ return fetch(REST+p,{method:'POST',headers:H({'Content-Type':'application/json','Prefer':'return=representation'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); return r.json(); }); }
+
+  var TOKEN=null, RID=null, RNAME='', SKEY=null;
+  try{ TOKEN=localStorage.getItem('fo_token'); RID=localStorage.getItem('fo_rid'); RNAME=localStorage.getItem('fo_rname')||''; }catch(e){}
+  if(!RID){ RID=new URLSearchParams(location.search).get('rid'); } // توافق مؤقت مع الروابط القديمة
+  var materials=[], products=[], curIngredients=[], wtype='fixed';
+  var workers=[], editingId=null, editRates={}, openWorker=null;
+  var vmode='unified';
+  var currentPeriod='اليوم', rangeFrom='', rangeTo='';
+
+  function msg(id,t,ok){ var el=document.getElementById(id); el.textContent=t; el.className='msg show '+(ok?'ok':'err'); if(ok)setTimeout(function(){el.className='msg';},2600); }
+  function val(id){ return document.getElementById(id).value.trim(); }
+  function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function daysAgoISO(n){ var d=new Date(); d.setDate(d.getDate()-n); return iso(d); }
+  function tab(i,el){ var ts=document.querySelectorAll('.tab'); for(var j=0;j<ts.length;j++)ts[j].classList.remove('active'); if(el&&el.classList)el.classList.add('active'); else if(ts[i])ts[i].classList.add('active'); var ps=document.querySelectorAll('.pane'); for(var k=0;k<ps.length;k++)ps[k].classList.toggle('active',k===i); if(i===3)loadReports(); if(i===4)loadMonitor(); }
+
+  // ---- العدّ التنازلي للتجربة المجانية ----
+  var trialTimer=null;
+  function stopTrialCountdown(){ if(trialTimer){ clearInterval(trialTimer); trialTimer=null; } }
+  function startTrialCountdown(endDate){
+    stopTrialCountdown();
+    var target=new Date(endDate+'T23:59:59').getTime();
+    var banner=document.getElementById('trialBanner');
+    var txt=document.getElementById('trialTxt');
+    if(!banner||!txt) return;
+    banner.style.display='block';
+    function tick(){
+      var diff=target-Date.now();
+      if(diff<=0){ txt.textContent='انتهت تجربتك المجانية — اشترك للمتابعة'; stopTrialCountdown(); checkSubscription(); return; }
+      var d=Math.floor(diff/86400000);
+      var h=Math.floor(diff%86400000/3600000);
+      var m=Math.floor(diff%3600000/60000);
+      var sec=Math.floor(diff%60000/1000);
+      var parts=[];
+      if(d>0) parts.push(d+' '+(d===1?'يوم':(d===2?'يومان':'أيام')));
+      parts.push(String(h).padStart(2,'0')+' س');
+      parts.push(String(m).padStart(2,'0')+' د');
+      parts.push(String(sec).padStart(2,'0')+' ث');
+      txt.innerHTML='تجربة مجانية — يتبقّى <span style="font-family:\'Baloo 2\',monospace;letter-spacing:1px">'+parts.join(' : ')+'</span>';
+      // تنبيه بصري في آخر يوم
+      banner.style.borderColor = (diff<86400000)? '#7A3A2A' : '#4A4222';
+      txt.style.color = (diff<86400000)? '#FF9A6B' : '#F3C969';
+    }
+    tick();
+    trialTimer=setInterval(tick,1000);
+  }
+
+  function checkSubscription(){
+    return gGet('restaurants?select=status,subscription_end,is_trial&id=eq.'+RID).then(function(r){
+      if(!r||!r[0]) return true;
+      var rest=r[0];
+      var today=new Date(); var t=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+      // شارة التجربة المجانية مع عدّ تنازلي حيّ
+      if(rest.is_trial && rest.subscription_end){
+        startTrialCountdown(rest.subscription_end);
+      } else { stopTrialCountdown(); document.getElementById('trialBanner').style.display='none'; }
+      if(rest.status!=='actif' || (rest.subscription_end && rest.subscription_end < t)){
+        try{ localStorage.removeItem('fo_token'); localStorage.removeItem('fo_refresh'); localStorage.removeItem('fo_rid'); localStorage.removeItem('fo_rname'); }catch(e){}
+        document.body.innerHTML='<div style="max-width:460px;margin:80px auto;padding:0 22px;text-align:center;font-family:inherit">'+
+          '<div style="font-family:\'Baloo 2\',sans-serif;font-weight:800;font-size:32px;color:#fff">food<span style="background:linear-gradient(90deg,#4ECB99,#9887FF);-webkit-background-clip:text;background-clip:text;color:transparent">ordo</span></div>'+
+          '<h2 style="color:#fff;font-size:22px;margin:22px 0 10px">انتهى اشتراكك</h2>'+
+          '<p style="color:#AEB6C3;font-size:14.5px;line-height:1.9">أُغلقت الجلسة تلقائياً. بياناتك — المنتجات والمخزون والعمّال والتقارير — محفوظة بالكامل ولم تُمسّ. جدّد اشتراكك لفتح حسابك من جديد.</p>'+
+          '<button onclick="location.href=\'foodordo-welcome-connected.html\'" style="display:block;width:100%;max-width:320px;margin:26px auto 0;border:0;cursor:pointer;padding:16px;border-radius:14px;font-family:inherit;font-weight:800;font-size:16px;color:#fff;background:linear-gradient(90deg,#F0762E,#2FB07F 55%,#7A6BF5)">تجديد الاشتراك</button>'+
+          '</div>';
+        return false;
+      }
+      return true;
+    }).catch(function(){ return true; });
+  }
+  function boot(){
+    if(!RID){ document.getElementById('gate').style.display='block'; return; }
+    document.getElementById('app').style.display='block';
+    if(RNAME){ document.getElementById('roleTag').textContent='لوحة التاجر · '+RNAME; }
+    else { gGet('restaurants?select=restaurant_name&id=eq.'+RID).then(function(r){ if(r&&r[0]) document.getElementById('roleTag').textContent='لوحة التاجر · '+r[0].restaurant_name; }).catch(function(){}); }
+    refreshNow();
+    setInterval(refreshNow, 40*60*1000);
+    gRpc('my_storage_key',{p_rid:RID}).then(function(k){ if(k) SKEY=k; }).catch(function(){});
+    checkSubscription();
+    setInterval(checkSubscription, 40*60*1000);
+    setupCollapsibles(); loadCategories(); loadMaterials(); loadProducts(); loadWorkers(); loadStaffStatus();
+  }
+  function logout(){ try{ localStorage.removeItem('fo_token'); localStorage.removeItem('fo_refresh'); localStorage.removeItem('fo_rid'); localStorage.removeItem('fo_rname'); }catch(e){} location.href='foodordo-welcome-connected.html'; }
+
+  // ---- المخزون ----
+  function loadMaterials(){ gGet('materials?select=*&restaurant_id=eq.'+RID+'&order=created_at.desc').then(function(rows){ materials=rows||[]; renderMaterials(); fillIngSelect(); }).catch(function(e){ document.getElementById('matList').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; }); }
+  var openMat=null, editMatId=null;
+  function matUsedBy(mid){
+    return products.filter(function(p){ return (p.product_ingredients||[]).some(function(i){ return String(i.material_id)===String(mid); }); });
+  }
+  function renderMaterials(){
+    var el=document.getElementById('matList');
+    var out=materials.filter(function(m){ return Number(m.quantity||0)<=0; });
+    var low=materials.filter(function(m){ var q=Number(m.quantity||0); return q>0 && q<=2; });
+    var banner='';
+    if(out.length) banner+='<div class="msg show" style="margin-bottom:10px">⚠️ نفد المخزون: <b>'+out.map(function(m){return m.name;}).join('، ')+'</b> — منتجاتها اختفت من شاشة الزبون. أعد تعبئتها.</div>';
+    if(low.length) banner+='<div class="hint" style="color:#F3C969;margin-bottom:10px">قارب على النفاد: '+low.map(function(m){return m.name+' ('+m.quantity+' '+esc(m.unit)+')';}).join('، ')+'</div>';
+    if(!materials.length){ el.innerHTML=banner+'<div class="empty">لا توجد مواد في المخزون بعد.</div>'; return; }
+    el.innerHTML= banner + materials.map(function(m){
+      var q=Number(m.quantity||0);
+      var col = q<=0? '#FF6B6B' : (q<=2? '#F3C969' : '');
+      var used=matUsedBy(m.id);
+      var kind=m.is_goods? '<span class="pill o" style="margin-right:6px">سلعة تجارية</span>':'';
+      var open=(openMat===m.id)?' show':'';
+      return '<div class="wrow">'+
+        '<div class="whead" onclick="toggleMat(\''+m.id+'\')"><div class="info"><b>'+esc(m.name)+kind+'</b><span>'+(m.unit_price||0)+' دج / '+esc(m.unit)+'</span></div>'+
+          '<div class="rgt"><b'+(col?' style="color:'+col+'"':'')+'>'+q+' '+esc(m.unit)+'</b><span>'+(q<=0?'نفد':'المتوفّر')+'</span></div></div>'+
+        '<div class="wdet'+open+'" id="md_'+m.id+'">'+
+          '<div class="drow"><span class="k">سعر الوحدة</span><span class="v">'+(m.unit_price||0)+' دج / '+esc(m.unit)+'</span></div>'+
+          '<div class="drow"><span class="k">قيمة المخزون</span><span class="v">'+Math.round(q*Number(m.unit_price||0))+' دج</span></div>'+
+          '<div class="drow"><span class="k">تُستعمل في</span><span class="v">'+(used.length? used.map(function(p){return p.name;}).join('، ') : 'لا شيء')+'</span></div>'+
+          '<div style="margin-top:10px"><label>إعادة تعبئة (تُضاف للكمية الحالية)</label>'+
+            '<div class="two"><input id="rq_'+m.id+'" type="number" placeholder="الكمية المضافة" /><button class="btn soft" onclick="restock(\''+m.id+'\')">أضف للمخزون</button></div></div>'+
+          '<div style="margin-top:10px"><label>تصحيح الجرد (يستبدل الكمية)</label>'+
+            '<div class="two"><input id="sq_'+m.id+'" type="number" placeholder="الكمية الفعلية" /><button class="btn soft" onclick="setStock(\''+m.id+'\')">تصحيح</button></div></div>'+
+          '<div class="wact"><button class="wedit" onclick="askEditMat(\''+m.id+'\')">تعديل البيانات</button><button class="wdel" onclick="askDelMat(\''+m.id+'\')">حذف</button></div>'+
+          '<div class="wconfirm" id="mc_'+m.id+'"></div>'+
+        '</div></div>';
+    }).join('');
+  }
+  function toggleMat(id){ openMat=(openMat===id)?null:id; renderMaterials(); }
+  function matQtyValid(m,v,el){
+    var countable=(m.unit==='قطعة'||m.unit==='علبة');
+    if(isNaN(v)||v<0){ msg(el,'أدخل رقماً صحيحاً غير سالب.'); return false; }
+    if(countable && v!==Math.floor(v)){ msg(el,'الكمية بوحدة «'+esc(m.unit)+'» يجب أن تكون رقماً صحيحاً.'); return false; }
+    return true;
+  }
+  function restock(id){
+    var m=materials.find(function(x){return x.id===id;}); if(!m)return;
+    var v=Number((document.getElementById('rq_'+id).value||'').trim());
+    if(!v||v<=0){ msg('mMsg','أدخل كمية أكبر من صفر.'); return; }
+    if(!matQtyValid(m,v,'mMsg')) return;
+    gPatchLocal('materials?id=eq.'+id,{quantity:Number(m.quantity||0)+v})
+      .then(function(){ msg('mMsg','تمت إعادة التعبئة ✓ ('+esc(m.name)+')',true); loadMaterials(); })
+      .catch(function(e){ msg('mMsg','تعذّر التحديث: '+safeErr(e)); });
+  }
+  function setStock(id){
+    var m=materials.find(function(x){return x.id===id;}); if(!m)return;
+    var raw=(document.getElementById('sq_'+id).value||'').trim();
+    if(raw===''){ msg('mMsg','أدخل الكمية الفعلية.'); return; }
+    var v=Number(raw);
+    if(!matQtyValid(m,v,'mMsg')) return;
+    gPatchLocal('materials?id=eq.'+id,{quantity:v})
+      .then(function(){ msg('mMsg','تم تصحيح الجرد ✓ ('+esc(m.name)+')',true); loadMaterials(); })
+      .catch(function(e){ msg('mMsg','تعذّر التحديث: '+safeErr(e)); });
+  }
+  function askEditMat(id){
+    var m=materials.find(function(x){return x.id===id;}); if(!m)return;
+    editMatId=id;
+    document.getElementById('mName').value=m.name;
+    document.getElementById('mUnit').value=m.unit;
+    document.getElementById('mPrice').value=m.unit_price||0;
+    document.getElementById('mQty').value=m.quantity||0;
+    document.getElementById('mQty').disabled=true;
+    document.getElementById('mBtn').textContent='حفظ التعديل';
+    document.getElementById('mCancel').style.display='block';
+    matSell(m.is_goods===true);
+    // في وضع التعديل نغيّر التصنيف فقط (السعر والصورة والقسم تُضبط عند الإضافة)
+    var sb=document.getElementById('mSellBox'); if(sb) sb.style.display='none';
+    msg('mMsg','عدّل البيانات ثم احفظ. (الكمية تُغيَّر من إعادة التعبئة أو تصحيح الجرد.)',true);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function cancelEditMat(){
+    editMatId=null;
+    document.getElementById('mName').value='';document.getElementById('mPrice').value='';document.getElementById('mQty').value='';
+    document.getElementById('mQty').disabled=false;
+    document.getElementById('mBtn').textContent='حفظ المادة';
+    document.getElementById('mCancel').style.display='none';
+  }
+  function askDelMat(id){
+    var m=materials.find(function(x){return x.id===id;}); if(!m)return;
+    var used=matUsedBy(id);
+    var el=document.getElementById('mc_'+id); if(!el)return;
+    if(used.length){
+      el.innerHTML='<p>لا يمكن حذف «'+esc(m.name)+'» لأنها مكوّن في: <b>'+esc(used.map(function(p){return p.name;}).join('، '))+'</b>. احذف تلك المنتجات أولاً أو غيّر مكوّناتها.</p><div class="cb"><button class="cn" onclick="closeMatConfirm(\''+id+'\')">فهمت</button></div>';
+      el.className='wconfirm show';
+      return;
+    }
+    el.innerHTML='<p>حذف «'+esc(m.name)+'» نهائياً من المخزون؟</p><div class="cb"><button class="cy" onclick="doDelMat(\''+id+'\')">نعم، احذف</button><button class="cn" onclick="closeMatConfirm(\''+id+'\')">تراجع</button></div>';
+    el.className='wconfirm show';
+  }
+  function closeMatConfirm(id){ var el=document.getElementById('mc_'+id); if(el){ el.innerHTML=''; el.className='wconfirm'; } }
+  function doDelMat(id){
+    fetch(REST+'materials?id=eq.'+id,{method:'DELETE',headers:H({'Prefer':'return=minimal'})})
+      .then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t);}); })
+      .then(function(){ openMat=null; msg('mMsg','تم الحذف ✓',true); loadMaterials(); })
+      .catch(function(e){ msg('mMsg','تعذّر الحذف: '+safeErr(e)); });
+  }
+  // ---- مادة تُباع للزبون مباشرة ----
+  var mSell=false, pendingMatImg=null;
+  function matSell(on){
+    mSell=on;
+    document.getElementById('msNo').classList.toggle('on',!on);
+    document.getElementById('msYes').classList.toggle('on',on);
+    document.getElementById('mSellBox').style.display=on?'block':'none';
+    var nm=document.getElementById('mName');
+    if(nm) nm.placeholder = on ? 'مثال: مشروب غازي · عصير · ماء معدني' : 'مثال: دقيق';
+  }
+  // إنشاء قسم سريع من داخل نموذج المخزون (داخل القسم المحدّد أعلاه)
+  function quickCat(){
+    var n=(document.getElementById('mNewCat').value||'').trim();
+    if(!n){ msg('mMsg','اكتب اسم القسم الجديد.'); return; }
+    var parent=document.getElementById('mCat').value||null;
+    gPost('categories',{restaurant_id:RID,name:n,parent_id:parent,skip_sauces:true})
+      .then(function(cr){
+        var cid=cr[0].id;
+        return loadCategories().then(function(){
+          document.getElementById('mCat').value=cid;
+          document.getElementById('mNewCat').value='';
+          msg('mMsg','تم إنشاء القسم «'+n+'» واختياره ✓',true);
+        });
+      })
+      .catch(function(e){ msg('mMsg','تعذّر إنشاء القسم: '+safeErr(e)); });
+  }
+  function showMatImg(inp){
+    var f=inp.files[0]; var el=document.getElementById('mImgName');
+    if(!f){ pendingMatImg=null; el.className='fname'; return; }
+    el.textContent='جارٍ تجهيز الصورة…'; el.classList.add('show');
+    compressImage(f).then(function(blob){
+      pendingMatImg=blob;
+      el.innerHTML='<img src="'+URL.createObjectURL(blob)+'" style="width:64px;height:64px;object-fit:cover;border-radius:10px;vertical-align:middle;margin-left:8px" /> ✓ جاهزة';
+    }).catch(function(){ pendingMatImg=f; el.textContent='✓ '+f.name; });
+  }
+  function addMaterial(){
+    var n=val('mName'); if(!n){msg('mMsg','اكتب اسم المادة.');return;}
+    if(Number(val('mPrice')||0)<=0){ msg('mMsg','أدخل سعر الوحدة.'); return; }
+    // وضع التعديل: البيانات فقط (الكمية تُغيَّر من إعادة التعبئة/تصحيح الجرد)
+    if(editMatId){
+      var eb=document.getElementById('mBtn'); eb.disabled=true; eb.textContent='جارٍ الحفظ…';
+      gPatchLocal('materials?id=eq.'+editMatId,{name:n,unit:val('mUnit'),unit_price:Number(val('mPrice')||0),is_goods:mSell})
+        .then(function(){ cancelEditMat(); msg('mMsg','تم حفظ التعديل ✓',true); loadMaterials(); loadProducts(); })
+        .catch(function(e){ msg('mMsg','تعذّر التعديل: '+safeErr(e)); })
+        .finally(function(){ eb.disabled=false; eb.textContent='حفظ المادة'; });
+      return;
+    }
+    var qty=Number(val('mQty')||0);
+    var unit=val('mUnit'), countable=(unit==='قطعة'||unit==='علبة');
+    if(qty<=0){ msg('mMsg','أدخل كمية أكبر من صفر — لا يمكن إضافة مادة بمخزون صفر.'); return; }
+    if(countable && qty!==Math.floor(qty)){ msg('mMsg','الكمية بوحدة «'+unit+'» يجب أن تكون رقماً صحيحاً (بلا كسور).'); return; }
+    if(mSell){
+      var sp=Number(val('mSellPrice')||0), buy=Number(val('mPrice')||0);
+      if(sp<=0){ msg('mMsg','أدخل سعر البيع للزبون.'); return; }
+      if(buy>0 && sp<buy){ msg('mMsg','سعر البيع ('+sp+' دج) أقلّ من سعر الشراء ('+buy+' دج) — ستبيع بخسارة. ارفع السعر.'); return; }
+    }
+    var b=document.getElementById('mBtn'); b.disabled=true; b.textContent='جارٍ الحفظ…';
+    var matId=null;
+    gPost('materials',{restaurant_id:RID,name:n,unit:val('mUnit'),unit_price:Number(val('mPrice')||0),quantity:Number(val('mQty')||0),is_goods:mSell})
+      .then(function(created){
+        matId=created[0].id;
+        if(!mSell) return;
+        // إنشاء منتج مرتبط بهذه المادة (وحدة واحدة) ليظهر للزبون ويُخصم تلقائياً
+        return gPost('products',{restaurant_id:RID,name:n,price:Number(val('mSellPrice')||0),category_id:(document.getElementById('mCat').value||null)})
+          .then(function(pr){
+            var pid=pr[0].id;
+            var chain=gPost('product_ingredients',[{product_id:pid,material_id:matId,quantity:1}]);
+            if(pendingMatImg){
+              var saved=pendingImg; pendingImg=pendingMatImg;
+              chain=chain.then(function(){ return uploadImage(pid); })
+                .then(function(url){ pendingImg=saved; if(url) return gPatchLocal('products?id=eq.'+pid,{image_url:url}); })
+                .catch(function(e){ pendingImg=saved; throw e; });
+            }
+            return chain;
+          });
+      })
+      .then(function(){
+        document.getElementById('mName').value='';document.getElementById('mPrice').value='';document.getElementById('mQty').value='';
+        var sp=document.getElementById('mSellPrice'); if(sp)sp.value='';
+        var mi=document.getElementById('mImg'); if(mi)mi.value='';
+        var mn=document.getElementById('mImgName'); if(mn){mn.className='fname';mn.innerHTML='';}
+        pendingMatImg=null; var mc=document.getElementById('mCat'); if(mc)mc.value=''; matSell(false);
+        msg('mMsg', mSell?'تمت الإضافة ✓ وستظهر للزبون':'تمت إضافة المادة ✓', true);
+        loadMaterials(); loadProducts();
+      })
+      .catch(function(e){msg('mMsg','تعذّر الحفظ: '+safeErr(e));})
+      .finally(function(){b.disabled=false;b.textContent='حفظ المادة';});
+  }
+
+  // ---- المنتجات ----
+  function fillIngSelect(){
+    // المواد الأوّلية أولاً، ثم السلع التجارية موسومة (تصلح لوجبة مركّبة مثل كومبو)
+    var raw=materials.filter(function(m){ return !m.is_goods; });
+    var goods=materials.filter(function(m){ return !!m.is_goods; });
+    var html='<option value="">اختر مادة…</option>';
+    html+=raw.map(function(m){return '<option value="'+m.id+'">'+esc(m.name)+' ('+esc(m.unit)+')</option>';}).join('');
+    if(goods.length){
+      html+='<option value="" disabled>——— سلع تجارية ———</option>';
+      html+=goods.map(function(m){return '<option value="'+m.id+'">'+esc(m.name)+' ('+esc(m.unit)+') — سلعة تجارية</option>';}).join('');
+    }
+    document.getElementById('ingMat').innerHTML=html;
+  }
+  // ---- صور المنتجات ----
+  var pendingImg=null; // ملف الصورة المضغوط بانتظار الرفع
+  function showImg(inp){
+    var f=inp.files[0]; var el=document.getElementById('pImgName');
+    if(!f){ pendingImg=null; el.className='fname'; return; }
+    el.textContent='جارٍ تجهيز الصورة…'; el.classList.add('show');
+    compressImage(f).then(function(blob){
+      pendingImg=blob;
+      var url=URL.createObjectURL(blob);
+      el.innerHTML='<img src="'+url+'" style="width:64px;height:64px;object-fit:cover;border-radius:10px;vertical-align:middle;margin-left:8px" /> ✓ جاهزة للرفع';
+    }).catch(function(){ pendingImg=f; el.textContent='✓ '+f.name; });
+  }
+  // ضغط الصورة إلى 600px كحدّ أقصى لتوفير المساحة وسرعة العرض
+  function compressImage(file){
+    return new Promise(function(resolve,reject){
+      var img=new Image(); var url=URL.createObjectURL(file);
+      img.onload=function(){
+        var max=600, w=img.width, h=img.height;
+        if(w>h && w>max){ h=Math.round(h*max/w); w=max; }
+        else if(h>max){ w=Math.round(w*max/h); h=max; }
+        var c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        URL.revokeObjectURL(url);
+        c.toBlob(function(b){ b? resolve(b) : reject(new Error('fail')); },'image/jpeg',0.82);
+      };
+      img.onerror=function(){ URL.revokeObjectURL(url); reject(new Error('fail')); };
+      img.src=url;
+    });
+  }
+  // رفع الصورة إلى حاوية products وإرجاع الرابط العام
+  function uploadImage(pid){
+    if(!pendingImg) return Promise.resolve(null);
+    // مفتاح تخزين منفصل — لا يكشف معرّف المطعم في رابط الصورة العام
+    var uid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+              : (Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10));
+    var folder = SKEY || RID;
+    var path=folder+'/'+uid+'.jpg';
+    return fetch(SUPABASE_URL+'/storage/v1/object/products/'+path,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+(TOKEN||SUPABASE_KEY),'Content-Type':'image/jpeg'},
+      body:pendingImg
+    }).then(function(r){
+      if(!r.ok) return r.text().then(function(t){ throw new Error(t); });
+      return SUPABASE_URL+'/storage/v1/object/public/products/'+path;
+    });
+  }
+  function addIngredient(){ var mid=val('ingMat'),q=val('ingQty'); if(!mid){msg('pMsg','اختر مادة أولاً.');return;} if(!q){msg('pMsg','اكتب الكمية.');return;} var m=materials.find(function(x){return String(x.id)===String(mid);}); curIngredients.push({id:m.id,name:m.name,unit:m.unit,qty:Number(q)}); document.getElementById('ingQty').value=''; renderChips(); }
+  function renderChips(){
+    document.getElementById('ingChips').innerHTML=curIngredients.map(function(c,idx){return '<span class="chip">'+esc(c.name)+' · '+c.qty+' '+esc(c.unit)+' <x onclick="rmIng('+idx+')">✕</x></span>';}).join('');
+    var cost=0;
+    curIngredients.forEach(function(c){ var m=materials.find(function(x){return String(x.id)===String(c.id);}); cost+=Number(c.qty||0)*Number((m&&m.unit_price)||0); });
+    var el=document.getElementById('ingCost');
+    if(el) el.innerHTML = curIngredients.length? ('تكلفة المكوّنات: <b style="color:#F3C969">'+Math.round(cost)+' دج</b> — اجعل سعر البيع أعلى منها.') : '';
+  }
+  function rmIng(i){ curIngredients.splice(i,1); renderChips(); }
+  function loadProducts(){ gGet('products?select=*,product_ingredients(id,material_id,quantity)&restaurant_id=eq.'+RID+'&order=created_at.desc').then(function(rows){ products=rows||[]; renderProducts(); renderVarRates(); }).catch(function(e){ document.getElementById('prodList').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; }); }
+  var openProd=null, editProdId=null;
+  // نافذة تفاصيل المنتج (تكلفة كل مكوّن)
+  function showDetail(id){
+    var p=products.find(function(x){return x.id===id;}); if(!p)return;
+    var cost=0, rows=(p.product_ingredients||[]).map(function(i){
+      var m=materials.find(function(x){return String(x.id)===String(i.material_id);});
+      var unitP=Number((m&&m.unit_price)||0), line=Number(i.quantity||0)*unitP;
+      cost+=line;
+      return '<div class="drow"><span class="k">'+((m&&m.name)||'—')+' · '+i.quantity+' '+((m&&m.unit)||'')+'</span><span class="v">'+Math.round(line)+' دج</span></div>'+
+             '<div class="drow" style="padding-top:0"><span class="k" style="font-size:11.5px;opacity:.7">سعر الوحدة '+unitP+' دج</span><span></span></div>';
+    }).join('');
+    var price=Number(p.price||0), margin=price-cost;
+    document.getElementById('dtName').textContent=p.name;
+    var c=p.category_id? cats.find(function(x){return x.id===p.category_id;}) : null;
+    document.getElementById('dtSub').textContent=(c?catFullName(c):'بلا تصنيف')+(p.is_active===false?' · مخفي عن الزبون':'');
+    document.getElementById('dtRows').innerHTML=rows||'<div class="empty" style="padding:8px 0">لا مكوّنات.</div>';
+    document.getElementById('dtCost').textContent=Math.round(cost)+' دج';
+    document.getElementById('dtPrice').textContent=price+' دج';
+    var mg=document.getElementById('dtMargin');
+    mg.textContent=Math.round(margin)+' دج'; mg.style.color=(margin>0?'#4ECB99':'#FF6B6B');
+    var hidden=(p.is_active===false);
+    document.getElementById('dtActions').innerHTML=
+      '<button class="wedit" onclick="askEditProd(\''+p.id+'\')">تعديل</button>'+
+      '<button class="wedit" onclick="toggleActive(\''+p.id+'\')">'+(hidden?'إظهار للزبون':'إخفاء عن الزبون')+'</button>'+
+      '<button class="wdel" onclick="askDelProd(\''+p.id+'\')">حذف</button>';
+    var dtc=document.getElementById('dtConfirm'); dtc.innerHTML=''; dtc.className='wconfirm';
+    document.getElementById('detailBg').classList.add('show');
+  }
+  function closeDetail(){ document.getElementById('detailBg').classList.remove('show'); }
+
+  // طيّ/فتح بطاقات الأقسام بسهم على اليسار
+  function setupCollapsibles(){
+    var cards=document.querySelectorAll('.card');
+    for(var i=0;i<cards.length;i++){
+      var card=cards[i], h=card.querySelector('h3');
+      if(!h || h.getAttribute('data-col')) continue;
+      h.setAttribute('data-col','1');
+      var body=document.createElement('div');
+      while(h.nextSibling) body.appendChild(h.nextSibling);
+      card.appendChild(body);
+      h.style.position='relative'; h.style.cursor='pointer'; h.style.paddingLeft='22px';
+      var ar=document.createElement('span'); ar.className='arw up'; ar.textContent='▲';
+      h.appendChild(ar);
+      (function(b,a){ h.onclick=function(){ var hid=(b.style.display==='none'); b.style.display=hid?'':'none'; a.className='arw'+(hid?' up':''); }; })(body,ar);
+    }
+  }
+  function prodCost(p){
+    var c=0; (p.product_ingredients||[]).forEach(function(i){ var m=materials.find(function(x){return String(x.id)===String(i.material_id);}); c+=Number(i.quantity||0)*Number((m&&m.unit_price)||0); });
+    return c;
+  }
+  function renderProducts(){
+    var el=document.getElementById('prodList');
+    if(!products.length){ el.innerHTML='<div class="empty">لا توجد منتجات بعد.</div>'; return; }
+    el.innerHTML=products.map(function(p){
+      var cnt=(p.product_ingredients?p.product_ingredients.length:0);
+      var thumb=p.image_url? '<img src="'+p.image_url+'" style="width:44px;height:44px;object-fit:cover;border-radius:10px;margin-left:10px;flex:0 0 44px" />' : '';
+      var c=p.category_id? cats.find(function(x){return x.id===p.category_id;}) : null;
+      var hidden=(p.is_active===false);
+      var desc=(cnt? (cnt+' مكوّن') : 'بلا مكوّنات')+(c? (' · '+catFullName(c)) : ' · بلا تصنيف')+(hidden?' · مخفي':'');
+      var cost=prodCost(p), margin=Number(p.price||0)-cost;
+      var ings=(p.product_ingredients||[]).map(function(i){
+        var m=materials.find(function(x){return String(x.id)===String(i.material_id);});
+        return '<div class="drow"><span class="k">'+((m&&m.name)||'—')+'</span><span class="v">'+i.quantity+' '+((m&&m.unit)||'')+'</span></div>';
+      }).join('');
+      var open=(openProd===p.id)?' show':'';
+      return '<div class="wrow"'+(hidden?' style="opacity:.55"':'')+'>'+
+        '<div class="whead" onclick="showDetail(\''+p.id+'\')">'+thumb+'<div class="info"><b>'+esc(p.name)+'</b><span>'+desc+'</span></div>'+
+          '<div class="rgt"><b>'+(p.price||0)+' دج</b><span>السعر</span></div></div>'+
+        '</div>';
+    }).join('');
+  }
+  function toggleProd(id){ openProd=(openProd===id)?null:id; renderProducts(); }
+  function toggleActive(id){
+    var p=products.find(function(x){return x.id===id;}); if(!p)return;
+    var now=(p.is_active===false);
+    gPatchLocal('products?id=eq.'+id,{is_active:now})
+      .then(function(){ closeDetail(); msg('pMsg', now?'ظهر المنتج للزبون ✓':'أُخفي المنتج عن الزبون ✓',true); loadProducts(); })
+      .catch(function(e){ msg('pMsg','تعذّر التحديث: '+safeErr(e)); });
+  }
+  function askEditProd(id){
+    var p=products.find(function(x){return x.id===id;}); if(!p)return;
+    closeDetail(); editProdId=id;
+    document.getElementById('pName').value=p.name;
+    document.getElementById('pPrice').value=p.price||0;
+    document.getElementById('pCat').value=p.category_id||'';
+    curIngredients=(p.product_ingredients||[]).map(function(i){
+      var m=materials.find(function(x){return String(x.id)===String(i.material_id);});
+      return {id:i.material_id,name:(m&&m.name)||'—',unit:(m&&m.unit)||'',qty:Number(i.quantity||0)};
+    });
+    renderChips();
+    document.getElementById('pBtn').textContent='حفظ التعديل';
+    document.getElementById('pCancel').style.display='block';
+    msg('pMsg','عدّل المنتج ثم احفظ. (اختر صورة جديدة لتبديل الصورة.)',true);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function cancelEditProd(){
+    editProdId=null;
+    document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pCat').value='';
+    document.getElementById('pImg').value=''; pendingImg=null;
+    var pn=document.getElementById('pImgName'); pn.className='fname'; pn.innerHTML='';
+    curIngredients=[]; renderChips();
+    document.getElementById('pBtn').textContent='حفظ المنتج';
+    document.getElementById('pCancel').style.display='none';
+  }
+  function askDelProd(id){
+    var p=products.find(function(x){return x.id===id;}); if(!p)return;
+    var el=document.getElementById('dtConfirm'); if(!el)return;
+    el.innerHTML='<p>جارٍ التحقّق…</p>';
+    el.className='wconfirm show';
+    gGet('order_items?select=id&product_id=eq.'+id+'&limit=1').then(function(rows){
+      if(rows&&rows.length){
+        el.innerHTML='<p>«'+esc(p.name)+'» موجود في طلبات سابقة، وحذفه يفسد تقاريرك. الأفضل <b>إخفاؤه عن الزبون</b> — فيبقى تاريخ مبيعاته سليماً.</p><div class="cb"><button class="cy edit" onclick="toggleActive(\''+id+'\')">إخفاء عن الزبون</button><button class="cn" onclick="closeProdConfirm(\''+id+'\')">تراجع</button></div>';
+      } else {
+        el.innerHTML='<p>حذف «'+esc(p.name)+'» نهائياً؟ (لم يُطلب من قبل)</p><div class="cb"><button class="cy" onclick="doDelProd(\''+id+'\')">نعم، احذف</button><button class="cn" onclick="closeProdConfirm(\''+id+'\')">تراجع</button></div>';
+      }
+    }).catch(function(e){ el.innerHTML='<p>تعذّر التحقّق: '+esc(safeErr(e))+'</p><div class="cb"><button class="cn" onclick="closeProdConfirm(\''+id+'\')">إغلاق</button></div>'; });
+  }
+  function closeProdConfirm(id){ var el=document.getElementById('dtConfirm'); if(el){ el.innerHTML=''; el.className='wconfirm'; } }
+  function doDelProd(id){
+    fetch(REST+'product_ingredients?product_id=eq.'+id,{method:'DELETE',headers:H({'Prefer':'return=minimal'})})
+      .then(function(){ return fetch(REST+'products?id=eq.'+id,{method:'DELETE',headers:H({'Prefer':'return=minimal'})}); })
+      .then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t);}); })
+      .then(function(){ closeDetail(); msg('pMsg','تم الحذف ✓',true); loadProducts(); })
+      .catch(function(e){ msg('pMsg','تعذّر الحذف: '+safeErr(e)); });
+  }
+  // ---- الأقسام والتصنيفات ----
+  var cats=[], pendingCatImg=null, catSkip=false;
+  function catSauce(skip){
+    catSkip=skip;
+    document.getElementById('csYes').classList.toggle('on',!skip);
+    document.getElementById('csNo').classList.toggle('on',skip);
+  }
+  function showCatImg(inp){
+    var f=inp.files[0]; var el=document.getElementById('catImgName');
+    if(!f){ pendingCatImg=null; el.className='fname'; return; }
+    el.textContent='جارٍ التجهيز…'; el.classList.add('show');
+    compressImage(f).then(function(b){ pendingCatImg=b; el.innerHTML='<img src="'+URL.createObjectURL(b)+'" style="width:56px;height:56px;object-fit:cover;border-radius:10px;vertical-align:middle;margin-left:8px" /> ✓'; })
+      .catch(function(){ pendingCatImg=f; el.textContent='✓ '+f.name; });
+  }
+  function loadCategories(){
+    return gGet('categories?select=*&restaurant_id=eq.'+RID+'&order=created_at.asc').then(function(rows){
+      cats=rows||[]; fillCatSelects(); renderCatTree();
+    }).catch(function(){});
+  }
+  function catFullName(c){
+    var parts=[c.name], pid=c.parent_id, guard=0;
+    while(pid && guard++<20){ var p=cats.find(function(x){return x.id===pid;}); if(!p)break; parts.unshift(p.name); pid=p.parent_id; }
+    return parts.join(' ← ');
+  }
+  function fillCatSelects(){
+    var opts='<option value="">— بلا تصنيف —</option>'+cats.map(function(c){ return '<option value="'+c.id+'">'+catFullName(c)+'</option>'; }).join('');
+    var pc=document.getElementById('pCat'); if(pc){ var v=pc.value; pc.innerHTML=opts; pc.value=v; }
+    var mc=document.getElementById('mCat'); if(mc){ var v2=mc.value; mc.innerHTML=opts; mc.value=v2; }
+    var par=document.getElementById('catParent');
+    if(par){ var v3=par.value; par.innerHTML='<option value="">— قسم رئيسي —</option>'+cats.map(function(c){ return '<option value="'+c.id+'">'+catFullName(c)+'</option>'; }).join(''); par.value=v3; }
+  }
+  function renderCatTree(){
+    var el=document.getElementById('catTree'); if(!el)return;
+    if(!cats.length){ el.innerHTML='<div class="empty">لا توجد أقسام بعد.</div>'; return; }
+    function branch(pid,depth){
+      return cats.filter(function(c){ return (c.parent_id||null)===(pid||null); }).map(function(c){
+        var thumb=c.image_url? '<img src="'+c.image_url+'" style="width:32px;height:32px;object-fit:cover;border-radius:8px;margin-left:8px;flex:0 0 32px" />':'';
+        var tag=c.skip_sauces? ' <span style="color:#5C9BFF;font-size:11px">· بلا صلصات</span>':'';
+        return '<div class="item" style="margin-right:'+(depth*16)+'px">'+thumb+'<div class="info"><b>'+esc(c.name)+'</b><span>'+(depth?'تصنيف فرعي':'قسم رئيسي')+tag+'</span></div><div class="rgt"><x style="color:#FF8A8A;cursor:pointer" onclick="delCategory(\''+c.id+'\')">حذف</x></div></div>'+branch(c.id,depth+1);
+      }).join('');
+    }
+    el.innerHTML=branch(null,0);
+  }
+  function addCategory(){
+    var n=(document.getElementById('catName').value||'').trim();
+    if(!n){ msg('catMsg','اكتب اسم القسم.'); return; }
+    var b=document.getElementById('catBtn'); b.disabled=true; b.textContent='جارٍ الحفظ…';
+    var parent=document.getElementById('catParent').value||null;
+    gPost('categories',{restaurant_id:RID,name:n,parent_id:parent,skip_sauces:catSkip})
+      .then(function(cr){
+        var cid=cr[0].id;
+        if(!pendingCatImg) return;
+        var saved=pendingImg; pendingImg=pendingCatImg;
+        return uploadImage(cid).then(function(url){ pendingImg=saved; if(url) return gPatchLocal('categories?id=eq.'+cid,{image_url:url}); })
+          .catch(function(e){ pendingImg=saved; throw e; });
+      })
+      .then(function(){
+        document.getElementById('catName').value='';
+        document.getElementById('catImg').value='';
+        var ci=document.getElementById('catImgName'); ci.className='fname'; ci.innerHTML='';
+        pendingCatImg=null; catSauce(false);
+        msg('catMsg','تم حفظ القسم ✓',true); loadCategories();
+      })
+      .catch(function(e){ msg('catMsg','تعذّر الحفظ: '+safeErr(e)); })
+      .finally(function(){ b.disabled=false; b.textContent='حفظ القسم'; });
+  }
+  function delCategory(id){
+    if(!confirm('حذف هذا القسم؟ ستُحذف تصنيفاته الفرعية، وتبقى منتجاته بلا تصنيف.')) return;
+    fetch(REST+'categories?id=eq.'+id,{method:'DELETE',headers:H({'Prefer':'return=minimal'})})
+      .then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t);}); })
+      .then(function(){ loadCategories(); loadProducts(); })
+      .catch(function(e){ msg('catMsg','تعذّر الحذف: '+safeErr(e)); });
+  }
+
+  function addProduct(){
+    var n=val('pName'); if(!n){msg('pMsg','اكتب اسم المنتج.');return;}
+    if(!curIngredients.length){ msg('pMsg','أضف مكوّنات المنتج من المخزون — وإلا لن يُخصم المخزون عند البيع ولن تكون أرباحك دقيقة. (المنتجات الجاهزة تُضاف من تبويب المخزون.)'); return; }
+    var price=Number(val('pPrice')||0);
+    if(price<=0){ msg('pMsg','أدخل سعر بيع أكبر من صفر.'); return; }
+    var cost=0;
+    curIngredients.forEach(function(c){ var m=materials.find(function(x){return String(x.id)===String(c.id);}); cost+=Number(c.qty||0)*Number((m&&m.unit_price)||0); });
+    if(cost>0 && price<cost){ msg('pMsg','سعر البيع ('+price+' دج) أقلّ من تكلفة المكوّنات ('+Math.round(cost)+' دج) — ستبيع بخسارة. ارفع السعر.'); return; }
+    var b=document.getElementById('pBtn'); b.disabled=true; b.textContent=pendingImg?'جارٍ رفع الصورة…':'جارٍ الحفظ…';
+    var ings=curIngredients.slice(); var pid=null;
+    // وضع التعديل: تحديث البيانات + استبدال المكوّنات + تبديل الصورة إن اختيرت
+    if(editProdId){
+      pid=editProdId;
+      gPatchLocal('products?id=eq.'+pid,{name:n,price:price,category_id:(document.getElementById('pCat').value||null)})
+        .then(function(){ return fetch(REST+'product_ingredients?product_id=eq.'+pid,{method:'DELETE',headers:H({'Prefer':'return=minimal'})}); })
+        .then(function(){ return gPost('product_ingredients',ings.map(function(c){return {product_id:pid,material_id:c.id,quantity:c.qty};})); })
+        .then(function(){ if(!pendingImg)return; return uploadImage(pid).then(function(url){ if(url) return gPatchLocal('products?id=eq.'+pid,{image_url:url}); }); })
+        .then(function(){ cancelEditProd(); msg('pMsg','تم حفظ التعديل ✓',true); loadProducts(); })
+        .catch(function(e){ msg('pMsg','تعذّر التعديل: '+safeErr(e)); })
+        .finally(function(){ b.disabled=false; b.textContent='حفظ المنتج'; });
+      return;
+    }
+    gPost('products',{restaurant_id:RID,name:n,price:price,category_id:(document.getElementById('pCat').value||null)})
+      .then(function(created){
+        pid=created[0].id;
+        return uploadImage(pid).then(function(url){
+          if(!url) return;
+          return gPatchLocal('products?id=eq.'+pid,{image_url:url});
+        });
+      })
+      .then(function(){ return gPost('product_ingredients',ings.map(function(c){return {product_id:pid,material_id:c.id,quantity:c.qty};})); })
+      .then(function(){
+        document.getElementById('pName').value='';document.getElementById('pPrice').value='';
+        document.getElementById('pImgName').className='fname';document.getElementById('pImgName').innerHTML='';
+        document.getElementById('pImg').value=''; pendingImg=null;
+        curIngredients=[];renderChips(); document.getElementById('pCat').value=''; editProdId=null; msg('pMsg','تمت إضافة المنتج ✓',true); loadProducts();
+      })
+      .catch(function(e){msg('pMsg','تعذّر الحفظ: '+safeErr(e));})
+      .finally(function(){b.disabled=false;b.textContent='حفظ المنتج';});
+  }
+
+  // ---- العمّال ----
+  function wageType(t){ wtype=t; document.getElementById('segFixed').classList.toggle('on',t==='fixed'); document.getElementById('segVar').classList.toggle('on',t==='var'); document.getElementById('fixedBox').style.display=t==='fixed'?'block':'none'; document.getElementById('varBox').style.display=t==='var'?'block':'none'; if(t==='var')varMode(vmode); }
+  function varMode(m){ vmode=m; document.getElementById('vmUni').classList.toggle('on',m==='unified'); document.getElementById('vmPer').classList.toggle('on',m==='per'); document.getElementById('uniBox').style.display=m==='unified'?'block':'none'; document.getElementById('perBox').style.display=m==='per'?'block':'none'; if(m==='per')renderVarRates(); }
+  function renderVarRates(){ var el=document.getElementById('varRates'); if(!products.length){el.innerHTML='<div class="empty">أضف منتجات أولاً.</div>';return;} el.innerHTML=products.map(function(p){ var v=(editRates[p.id]!=null)?editRates[p.id]:''; return '<div class="rateln"><span class="nm">'+esc(p.name)+'</span><input type="number" placeholder="0" value="'+v+'" data-pid="'+p.id+'" /></div>';}).join(''); }
+  function pnameOf(pid){ var p=products.find(function(x){return String(x.id)===String(pid);}); return p?p.name:'منتج'; }
+
+  function loadWorkers(){
+    gGet('employees?select=*,employee_rates(product_id,rate)&restaurant_id=eq.'+RID+'&order=created_at.desc').then(function(rows){
+      workers=rows||[]; renderWorkers();
+    }).catch(function(e){ document.getElementById('wkList').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; });
+  }
+  function renderWorkers(){
+    var el=document.getElementById('wkList');
+    if(!workers.length){ el.innerHTML='<div class="empty">لا يوجد عمّال بعد.</div>'; return; }
+    el.innerHTML=workers.map(function(w){
+      var tag=w.wage_type==='fixed'?'<span class="pill g">أجر ثابت</span>':'<span class="pill o">أجر متغيّر</span>';
+      var short=w.wage_type==='fixed'?((w.daily_wage||0)+' دج / يوم'):((w.employee_rates?w.employee_rates.length:0)+' منتج مسعّر');
+      var det;
+      if(w.wage_type==='fixed'){
+        det='<div class="drow"><span class="k">نوع الأجر</span><span class="v">ثابت</span></div>'+
+            '<div class="drow"><span class="k">الأجر اليومي</span><span class="v">'+(w.daily_wage||0)+' دج / يوم</span></div>';
+      } else {
+        var uni=(w.employee_rates||[]).find(function(r){return r.product_id==null;});
+        if(uni){
+          det='<div class="drow"><span class="k">نوع الأجر</span><span class="v">متغيّر · سعر موحّد</span></div>'+
+              '<div class="drow"><span class="k">لكل قطعة (كل المنتجات)</span><span class="v">'+uni.rate+' دج</span></div>';
+        } else {
+          var rates=(w.employee_rates||[]).map(function(r){ return '<div class="drow"><span class="k">'+pnameOf(r.product_id)+'</span><span class="v">'+r.rate+' دج / قطعة</span></div>'; }).join('');
+          det='<div class="drow"><span class="k">نوع الأجر</span><span class="v">متغيّر (لكل منتج)</span></div>'+(rates||'<div class="empty" style="padding:8px 0">لا توجد أسعار.</div>');
+        }
+      }
+      var open=(openWorker===w.id)?' show':'';
+      return '<div class="wrow">'+
+        '<div class="whead" onclick="toggleWorker(\''+w.id+'\')"><div class="info"><b>'+esc(w.name)+'</b><span>'+(w.role||'—')+' · '+short+'</span></div>'+tag+'</div>'+
+        '<div class="wdet'+open+'" id="wd_'+w.id+'">'+
+          '<div class="drow"><span class="k">الوظيفة</span><span class="v">'+(w.role||'—')+'</span></div>'+det+
+          '<div class="wact"><button class="wedit" onclick="askEditWorker(\''+w.id+'\')">تعديل</button><button class="wdel" onclick="askDeleteWorker(\''+w.id+'\')">حذف</button></div>'+
+          '<div class="wconfirm" id="wc_'+w.id+'"></div>'+
+        '</div></div>';
+    }).join('');
+  }
+  function toggleWorker(id){ openWorker=(openWorker===id)?null:id; renderWorkers(); }
+
+  function askDeleteWorker(id){
+    var el=document.getElementById('wc_'+id); if(!el)return;
+    el.innerHTML='<p>هل تؤكّد حذف هذا العامل نهائياً؟</p><div class="cb"><button class="cy" onclick="doDeleteWorker(\''+id+'\')">نعم، احذف</button><button class="cn" onclick="closeWConfirm(\''+id+'\')">لا</button></div>';
+    el.className='wconfirm show';
+  }
+  function askEditWorker(id){
+    var el=document.getElementById('wc_'+id); if(!el)return;
+    el.innerHTML='<p>سيُفتح العامل في نموذج الأعلى للتعديل. متابعة؟</p><div class="cb"><button class="cy edit" onclick="doEditWorker(\''+id+'\')">نعم، عدّل</button><button class="cn" onclick="closeWConfirm(\''+id+'\')">لا</button></div>';
+    el.className='wconfirm show';
+  }
+  function closeWConfirm(id){ var el=document.getElementById('wc_'+id); if(el)el.className='wconfirm'; }
+
+  function doDeleteWorker(id){
+    fetch(REST+'employees?id=eq.'+id,{method:'DELETE',headers:H({'Prefer':'return=minimal'})})
+      .then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t)}); openWorker=null; msg('wMsg','تم حذف العامل ✓',true); loadWorkers(); })
+      .catch(function(e){ msg('wMsg','تعذّر الحذف: '+safeErr(e)); });
+  }
+  function doEditWorker(id){
+    var w=workers.find(function(x){return x.id===id;}); if(!w)return;
+    editingId=id;
+    document.getElementById('wName').value=w.name||'';
+    document.getElementById('wRole').value=w.role||'';
+    editRates={}; var uniR=(w.employee_rates||[]).find(function(r){return r.product_id==null;});
+    (w.employee_rates||[]).forEach(function(r){ if(r.product_id!=null) editRates[r.product_id]=r.rate; });
+    wageType(w.wage_type==='var'?'var':'fixed');
+    if(w.wage_type==='var'){ if(uniR){ varMode('unified'); document.getElementById('wUni').value=uniR.rate; } else { varMode('per'); } }
+    document.getElementById('wDaily').value=(w.wage_type==='fixed')?(w.daily_wage||''):'';
+    document.getElementById('wBtn').textContent='حفظ التعديل';
+    document.getElementById('wCancel').style.display='block';
+    closeWConfirm(id);
+    document.getElementById('wName').scrollIntoView({behavior:'smooth',block:'center'});
+    msg('wMsg','تُعدّل الآن: '+esc(w.name), true);
+  }
+  function cancelEdit(){
+    editingId=null; editRates={}; vmode='unified';
+    document.getElementById('wName').value='';document.getElementById('wRole').value='';document.getElementById('wDaily').value='';
+    var u=document.getElementById('wUni'); if(u)u.value='';
+    wageType('fixed');
+    document.getElementById('wBtn').textContent='حفظ العامل';
+    document.getElementById('wCancel').style.display='none';
+  }
+
+  function saveWorker(){
+    var n=val('wName'); if(!n){msg('wMsg','اكتب اسم العامل.');return;}
+    var b=document.getElementById('wBtn'); b.disabled=true; b.textContent='جارٍ الحفظ…';
+    var body={restaurant_id:RID,name:n,role:val('wRole'),wage_type:wtype,daily_wage:wtype==='fixed'?Number(val('wDaily')||0):null};
+    var rates=[]; if(wtype==='var'){ if(vmode==='unified'){ var u=Number(val('wUni')||0); if(u>0)rates.push({product_id:null,rate:u}); } else { document.querySelectorAll('#varRates input').forEach(function(inp){ var v=Number(inp.value||0); if(v>0)rates.push({product_id:inp.getAttribute('data-pid'),rate:v}); }); } }
+    if(editingId){
+      // تعديل: تحديث العامل + استبدال أجوره
+      gPatch('employees?id=eq.'+editingId, body)
+        .then(function(){ return fetch(REST+'employee_rates?employee_id=eq.'+editingId,{method:'DELETE',headers:H({'Prefer':'return=minimal'})}); })
+        .then(function(){ if(!rates.length)return; return gPost('employee_rates',rates.map(function(r){return {employee_id:editingId,product_id:r.product_id,rate:r.rate};})); })
+        .then(function(){ msg('wMsg','تم حفظ التعديل ✓',true); cancelEdit(); loadWorkers(); })
+        .catch(function(e){ msg('wMsg','تعذّر التعديل: '+safeErr(e)); })
+        .finally(function(){ b.disabled=false; b.textContent=editingId?'حفظ التعديل':'حفظ العامل'; });
+    } else {
+      gPost('employees',body).then(function(created){ var eid=created[0].id; if(!rates.length)return; return gPost('employee_rates',rates.map(function(r){return {employee_id:eid,product_id:r.product_id,rate:r.rate};})); })
+        .then(function(){ document.getElementById('wName').value='';document.getElementById('wRole').value='';document.getElementById('wDaily').value=''; msg('wMsg','تمت إضافة العامل ✓',true); loadWorkers(); })
+        .catch(function(e){msg('wMsg','تعذّر الحفظ: '+safeErr(e));})
+        .finally(function(){b.disabled=false;b.textContent='حفظ العامل';});
+    }
+  }
+
+  // ---- التقارير (موصولة) ----
+  function setPeriod(label,el){ var bs=document.querySelectorAll('.pbtn'); for(var i=0;i<bs.length;i++)bs[i].classList.remove('active'); el.classList.add('active'); currentPeriod=label; document.getElementById('periodLabel').textContent=label; document.getElementById('dateRange').classList.toggle('show', label==='مخصّص'); loadReports(); }
+  function applyRange(){ rangeFrom=document.getElementById('dFrom').value; rangeTo=document.getElementById('dTo').value; document.getElementById('periodLabel').textContent=(rangeFrom&&rangeTo)?('من '+rangeFrom+' إلى '+rangeTo):'اختر التاريخين'; loadReports(); }
+  function orderFilter(){
+    if(currentPeriod==='اليوم') return 'order_date=eq.'+iso(new Date());
+    if(currentPeriod==='الأسبوع') return 'order_date=gte.'+daysAgoISO(6);
+    if(currentPeriod==='الشهر') return 'order_date=gte.'+daysAgoISO(29);
+    if(currentPeriod==='مخصّص'){ if(rangeFrom&&rangeTo) return 'order_date=gte.'+rangeFrom+'&order_date=lte.'+rangeTo; return 'order_date=eq.'+iso(new Date()); }
+    return 'order_date=eq.'+iso(new Date());
+  }
+  function daysInPeriod(){
+    if(currentPeriod==='اليوم')return 1; if(currentPeriod==='الأسبوع')return 7; if(currentPeriod==='الشهر')return 30;
+    if(currentPeriod==='مخصّص'){ if(rangeFrom&&rangeTo){ var d1=new Date(rangeFrom),d2=new Date(rangeTo); return Math.max(1,Math.round((d2-d1)/86400000)+1);} return 1; }
+    return 1;
+  }
+  function loadReports(){
+    Promise.all([
+      gGet('orders?select=total,order_items(product_id,quantity)&restaurant_id=eq.'+RID+'&status=in.(paid,delivered)&'+orderFilter()),
+      gGet('products?select=id,name,unit_cost,product_ingredients(material_id,quantity)&restaurant_id=eq.'+RID),
+      gGet('materials?select=id,name,unit,unit_price&restaurant_id=eq.'+RID),
+      gGet('employees?select=wage_type,daily_wage,employee_rates(product_id,rate)&restaurant_id=eq.'+RID)
+    ]).then(function(r){ computeReports(r[0]||[],r[1]||[],r[2]||[],r[3]||[]); })
+      .catch(function(e){ document.getElementById('rBest').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; });
+  }
+  function computeReports(orders,prods,mats,emps){
+    var sales=0, pieces={};
+    orders.forEach(function(o){ sales+=Number(o.total||0); (o.order_items||[]).forEach(function(i){ pieces[i.product_id]=(pieces[i.product_id]||0)+Number(i.quantity||0); }); });
+    var recipe={}, pname={}, pcost={}; prods.forEach(function(p){ recipe[p.id]=p.product_ingredients||[]; pname[p.id]=p.name; pcost[p.id]=Number(p.unit_cost||0); });
+    var mprice={}, mname={}, munit={}; mats.forEach(function(m){ mprice[m.id]=Number(m.unit_price||0); mname[m.id]=m.name; munit[m.id]=m.unit; });
+    var consumed={};
+    for(var pid in pieces){ (recipe[pid]||[]).forEach(function(ing){ consumed[ing.material_id]=(consumed[ing.material_id]||0)+Number(ing.quantity||0)*pieces[pid]; }); }
+    var cogs=0; for(var mid in consumed){ cogs+=consumed[mid]*(mprice[mid]||0); }
+    // تكلفة المنتجات الجاهزة (المشتراة بلا مكوّنات)
+    for(var rp in pieces){ if(!(recipe[rp]||[]).length){ cogs+=pieces[rp]*(pcost[rp]||0); } }
+    var totalPieces=0; for(var pp in pieces) totalPieces+=pieces[pp];
+    var wages=0;
+    emps.forEach(function(e){
+      if(e.wage_type==='fixed'){ wages+=Number(e.daily_wage||0)*daysInPeriod(); return; }
+      var rts=e.employee_rates||[];
+      var uni=rts.find(function(r){return r.product_id==null;});
+      if(uni){ wages+=totalPieces*Number(uni.rate||0); }
+      else { rts.forEach(function(r){ wages+=(pieces[r.product_id]||0)*Number(r.rate||0); }); }
+    });
+    var profit=sales-cogs-wages;
+    document.getElementById('rSales').textContent=sales+' دج';
+    document.getElementById('rOrders').textContent=orders.length;
+    document.getElementById('rWages').textContent=Math.round(wages)+' دج';
+    document.getElementById('rProfit').textContent=Math.round(profit)+' دج';
+    // الأكثر مبيعاً
+    var best=Object.keys(pieces).map(function(pid){return {name:pname[pid]||'—',q:pieces[pid]};}).sort(function(a,b){return b.q-a.q;}).slice(0,6);
+    document.getElementById('rBest').innerHTML=best.length? best.map(function(x){return '<div class="row"><span class="k">'+x.name+'</span><span class="v">'+x.q+' قطعة</span></div>';}).join('') : '<div class="empty">لا توجد مبيعات في هذه الفترة بعد.</div>';
+    // المواد المستهلكة
+    var cons=Object.keys(consumed).map(function(mid){return {name:mname[mid]||'—',q:consumed[mid],unit:munit[mid]||''};}).sort(function(a,b){return b.q-a.q;});
+    document.getElementById('rCons').innerHTML=cons.length? cons.map(function(x){return '<div class="row"><span class="k">'+x.name+'</span><span class="v">'+(Math.round(x.q*100)/100)+' '+x.unit+'</span></div>';}).join('') : '<div class="empty">لا يوجد استهلاك في هذه الفترة بعد.</div>';
+  }
+
+  // ---- المتابعة المباشرة (عرض فقط) ----
+  function timeOf(ts){ if(!ts)return ''; var d=new Date(ts); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+  function loadMonitor(){
+    var today=iso(new Date());
+    gGet('orders?select=order_number,total,status,created_at,order_items(product_name,quantity)&restaurant_id=eq.'+RID+'&order_date=eq.'+today+'&order=order_number.asc')
+      .then(function(rows){ rows=rows||[];
+        var wait=rows.filter(function(o){return o.status==='new';});
+        var cook=rows.filter(function(o){return o.status==='paid';});
+        var done=rows.filter(function(o){return o.status==='delivered';});
+        document.getElementById('mWait').textContent=wait.length;
+        document.getElementById('mCook').textContent=cook.length;
+        document.getElementById('mDone').textContent=done.length;
+        renderMon('monWait', wait, true);
+        renderMon('monCook', cook, false);
+        renderMon('monDone', done, true);
+      })
+      .catch(function(e){ document.getElementById('monWait').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; });
+  }
+  function renderMon(elId, list, showTotal){
+    var el=document.getElementById(elId);
+    if(!list.length){ el.innerHTML='<div class="empty">لا شيء الآن.</div>'; return; }
+    el.innerHTML=list.map(function(o){
+      var names=(o.order_items||[]).map(function(i){return i.product_name+'×'+i.quantity;}).join('، ');
+      var right= showTotal ? '<span class="a" style="color:var(--green1)">'+(o.total||0)+' دج</span>' : '<span class="a" style="color:var(--purple1)">'+timeOf(o.created_at)+'</span>';
+      return '<div class="mo"><div class="n"><b>طلب رقم '+o.order_number+'</b><span>'+(names||'—')+'</span></div>'+right+'</div>';
+    }).join('');
+  }
+
+  // ---- حساب الكاشير والمطبخ (staff) ----
+  function loadStaffStatus(){
+    gGet('restaurants?select=staff_user_id&id=eq.'+RID).then(function(r){
+      var has = r && r[0] && r[0].staff_user_id;
+      var info=document.getElementById('staffInfo');
+      if(has){
+        info.innerHTML='<div class="drow" style="margin-bottom:6px"><span class="k">الحالة</span><span class="v" style="color:#4ECB99">✓ حساب موظّفين نشط</span></div><div class="hint" style="margin-bottom:10px">لتغيير البريد أو كلمة السر، أدخل بريداً جديداً أدناه — سيحلّ محلّ الحساب القديم.</div>';
+        document.getElementById('stfBtn').textContent='حفظ حساب موظّفين جديد (يستبدل القديم)';
+      } else {
+        info.innerHTML='<div class="drow" style="margin-bottom:10px"><span class="k">الحالة</span><span class="v" style="color:#F3C969">لم يُنشأ بعد</span></div>';
+        document.getElementById('stfBtn').textContent='حفظ حساب الموظّفين';
+      }
+    }).catch(function(){});
+  }
+  function saveStaff(){
+    var email=(document.getElementById('stfEmail').value||'').trim();
+    var pass=(document.getElementById('stfPass').value||'');
+    var m=document.getElementById('stfMsg');
+    if(!email||email.indexOf('@')<1){ m.textContent='أدخل بريداً صحيحاً.'; m.className='msg show'; return; }
+    if(pass.length<6){ m.textContent='كلمة السر يجب أن تكون 6 أحرف على الأقل.'; m.className='msg show'; return; }
+    var b=document.getElementById('stfBtn'); b.disabled=true; b.textContent='جارٍ الحفظ…';
+    fetch(AUTH+'signup',{method:'POST',headers:H({'Content-Type':'application/json'}),body:JSON.stringify({email:email,password:pass})})
+      .then(function(r){ return r.json().then(function(d){ if(!r.ok) throw new Error(d.msg||d.error_description||d.error||'تعذّر إنشاء الحساب'); return d; }); })
+      .then(function(auth){
+        var u=auth.user||auth;
+        if(u && u.identities && u.identities.length===0){ throw new Error('هذا البريد مستعمل مسبقاً (ربما لحساب مطعم آخر). استعمل بريداً مختلفاً.'); }
+        var uid=u.id;
+        return gPatchLocal('restaurants?id=eq.'+RID, {staff_user_id:uid});
+      })
+      .then(function(){
+        m.textContent='تم حفظ حساب الموظّفين ✓'; m.className='msg show ok';
+        document.getElementById('stfEmail').value=''; document.getElementById('stfPass').value='';
+        loadStaffStatus();
+      })
+      .catch(function(e){ m.textContent='تعذّر الحفظ: '+safeErr(e); m.className='msg show'; })
+      .finally(function(){ b.disabled=false; loadStaffStatus(); });
+  }
+  function gPatchLocal(p,b){ return fetch(REST+p,{method:'PATCH',headers:H({'Content-Type':'application/json','Prefer':'return=minimal'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){ onAuthFail(r,t); throw new Error(t)}); }); }
+
+  // ---- نسخة احتياطية: تنزيل كل بيانات المطعم كملف واحد ----
+  function downloadBackup(){
+    var b=document.getElementById('bkBtn'); b.disabled=true; b.textContent='جارٍ التجهيز…';
+    Promise.all([
+      gGet('restaurants?select=restaurant_name,owner_name,phone,plan_type,subscription_end&id=eq.'+RID),
+      gGet('materials?select=*&restaurant_id=eq.'+RID),
+      gGet('categories?select=*&restaurant_id=eq.'+RID),
+      gGet('products?select=*,product_ingredients(material_id,quantity)&restaurant_id=eq.'+RID),
+      gGet('employees?select=*,employee_rates(product_id,rate)&restaurant_id=eq.'+RID),
+      gGet('orders?select=*,order_items(product_name,unit_price,quantity,sauces)&restaurant_id=eq.'+RID+'&order=created_at.desc&limit=2000')
+    ]).then(function(r){
+      var data={
+        exported_at:new Date().toISOString(),
+        restaurant:(r[0]&&r[0][0])||null,
+        materials:r[1]||[], categories:r[2]||[], products:r[3]||[],
+        employees:r[4]||[], orders:r[5]||[]
+      };
+      var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a');
+      var d=new Date();
+      a.href=url;
+      a.download='foodordo-backup-'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'.json';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); },2000);
+      msg('bkMsg','تم تنزيل النسخة ✓ احفظها خارج الهاتف أيضاً.',true);
+    }).catch(function(e){ msg('bkMsg','تعذّر التجهيز: '+safeErr(e)); })
+      .finally(function(){ b.disabled=false; b.textContent='تنزيل نسخة احتياطية'; });
+  }
+
+  // ---- شاشات المحل: فتح كل شاشة حاملة المعرّف تلقائياً ----
+  function openScreen(which){
+    var map={ customer:'foodordo-customer-connected.html', cashier:'foodordo-cashier-connected.html', kitchen:'foodordo-kitchen-connected.html' };
+    var url=map[which]+'?rid='+encodeURIComponent(RID);
+    window.open(url, '_blank');
+  }
+
+  boot();
+</script>
+</body>
+</html>
