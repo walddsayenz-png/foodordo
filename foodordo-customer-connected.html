@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>foodordo — الطلب</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0F1116;--bg2:#141822;--card:#191C24;--line:#2A2F3A;--text:#F3F5F8;--muted:#AEB6C3;
+        --orange1:#FBA255;--orange2:#F0762E;--green1:#4ECB99;--green2:#2FB07F;--purple1:#9887FF;--purple2:#7A6BF5;--blue1:#5C9BFF;--blue2:#3D74E6;--amber:#F3C969;--red:#FF6B6B;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:"Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%221600%22%20viewBox%3D%220%200%20400%201600%22%3E%3Cg%20opacity%3D%22.075%22%3E%3Cg%20transform%3D%22translate(38%2070)%20rotate(-12)%20scale(1.35)%22%3E%3Cg%3E%3Cpath%20d%3D%22M8%2026c0-9%208-16%2020-16s20%207%2020%2016z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2215%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2226%22%20width%3D%2244%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M6%2033c4%204%208-2%2012%202s8-2%2012%202%208-2%2012%202%206-2%206-2v3H6z%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2239%22%20width%3D%2244%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M8%2046c0%205%206%208%2020%208s20-3%2020-8z%22%20fill%3D%22%23F0762E%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(300%20210)%20rotate(14)%20scale(1.00)%22%3E%3Cg%3E%3Cpath%20d%3D%22M30%204%2054%2050a3%203%200%200%201-3%204H9a3%203%200%200%201-3-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M9%2048h42a3%203%200%200%201%203%204H6a3%203%200%200%201%203-4z%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2224%22%20r%3D%224%22%20fill%3D%22%234ECB99%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Ccircle%20cx%3D%2240%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%234ECB99%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2244%22%20r%3D%222.6%22%20fill%3D%22%234ECB99%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%20400)%20rotate(7)%20scale(1.15)%22%3E%3Cg%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2215%22%20width%3D%225.4%22%20height%3D%2221%22%20rx%3D%222.7%22%20transform%3D%22rotate(-16%2018.7%2025)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2224%22%20y%3D%228%22%20%20width%3D%225.4%22%20height%3D%2228%22%20rx%3D%222.7%22%20transform%3D%22rotate(-5%2026.7%2022)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2231%22%20y%3D%2211%22%20width%3D%225.4%22%20height%3D%2225%22%20rx%3D%222.7%22%20transform%3D%22rotate(7%2033.7%2023)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2238%22%20y%3D%2217%22%20width%3D%225.4%22%20height%3D%2219%22%20rx%3D%222.7%22%20transform%3D%22rotate(17%2040.7%2026)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-4.6%2022a5%205%200%200%201-4.9%204H21.5a5%205%200%200%201-4.9-4z%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-1.5%207H13.5z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M23%2040h5.5l-2.4%2017h-5z%22%20fill%3D%22%230F1116%22%20opacity%3D%22.3%22%2F%3E%0A%3Cpath%20d%3D%22M33%2040h5.5l-1.9%2017h-5z%22%20fill%3D%22%230F1116%22%20opacity%3D%22.3%22%2F%3E%0A%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%20560)%20rotate(-9)%20scale(0.85)%22%3E%3Cg%3E%3Cpath%20d%3D%22M14%2018h32l-4%2034a5%205%200%200%201-5%204H23a5%205%200%200%201-5-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%2238%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Crect%20x%3D%2232%22%20y%3D%222%22%20width%3D%224%22%20height%3D%2212%22%20rx%3D%222%22%20transform%3D%22rotate(12%2034%208)%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Crect%20x%3D%2220%22%20y%3D%2228%22%20width%3D%2220%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(46%20720)%20rotate(10)%20scale(1.25)%22%3E%3Cg%3E%3Cpath%20d%3D%22M8%2026c0-9%208-16%2020-16s20%207%2020%2016z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2215%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2226%22%20width%3D%2244%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M6%2033c4%204%208-2%2012%202s8-2%2012%202%208-2%2012%202%206-2%206-2v3H6z%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2239%22%20width%3D%2244%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M8%2046c0%205%206%208%2020%208s20-3%2020-8z%22%20fill%3D%22%23F0762E%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(230%20880)%20rotate(-14)%20scale(1.00)%22%3E%3Cg%3E%3Cpath%20d%3D%22M30%204%2054%2050a3%203%200%200%201-3%204H9a3%203%200%200%201-3-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M9%2048h42a3%203%200%200%201%203%204H6a3%203%200%200%201%203-4z%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2224%22%20r%3D%224%22%20fill%3D%22%234ECB99%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Ccircle%20cx%3D%2240%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%234ECB99%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2244%22%20r%3D%222.6%22%20fill%3D%22%234ECB99%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%201050)%20rotate(6)%20scale(1.40)%22%3E%3Cg%3E%3Cpath%20d%3D%22M8%2026c0-9%208-16%2020-16s20%207%2020%2016z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2215%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%230F1116%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2226%22%20width%3D%2244%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M6%2033c4%204%208-2%2012%202s8-2%2012%202%208-2%2012%202%206-2%206-2v3H6z%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2239%22%20width%3D%2244%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M8%2046c0%205%206%208%2020%208s20-3%2020-8z%22%20fill%3D%22%23F0762E%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%201220)%20rotate(12)%20scale(0.90)%22%3E%3Cg%3E%3Cpath%20d%3D%22M30%204%2054%2050a3%203%200%200%201-3%204H9a3%203%200%200%201-3-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M9%2048h42a3%203%200%200%201%203%204H6a3%203%200%200%201%203-4z%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2224%22%20r%3D%224%22%20fill%3D%22%234ECB99%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Ccircle%20cx%3D%2240%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%234ECB99%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2244%22%20r%3D%222.6%22%20fill%3D%22%234ECB99%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(40%201380)%20rotate(-8)%20scale(1.10)%22%3E%3Cg%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2215%22%20width%3D%225.4%22%20height%3D%2221%22%20rx%3D%222.7%22%20transform%3D%22rotate(-16%2018.7%2025)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2224%22%20y%3D%228%22%20%20width%3D%225.4%22%20height%3D%2228%22%20rx%3D%222.7%22%20transform%3D%22rotate(-5%2026.7%2022)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2231%22%20y%3D%2211%22%20width%3D%225.4%22%20height%3D%2225%22%20rx%3D%222.7%22%20transform%3D%22rotate(7%2033.7%2023)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2238%22%20y%3D%2217%22%20width%3D%225.4%22%20height%3D%2219%22%20rx%3D%222.7%22%20transform%3D%22rotate(17%2040.7%2026)%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-4.6%2022a5%205%200%200%201-4.9%204H21.5a5%205%200%200%201-4.9-4z%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-1.5%207H13.5z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M23%2040h5.5l-2.4%2017h-5z%22%20fill%3D%22%230F1116%22%20opacity%3D%22.3%22%2F%3E%0A%3Cpath%20d%3D%22M33%2040h5.5l-1.9%2017h-5z%22%20fill%3D%22%230F1116%22%20opacity%3D%22.3%22%2F%3E%0A%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(240%201500)%20rotate(9)%20scale(1.20)%22%3E%3Cg%3E%3Cpath%20d%3D%22M14%2018h32l-4%2034a5%205%200%200%201-5%204H23a5%205%200%200%201-5-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%2238%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Crect%20x%3D%2232%22%20y%3D%222%22%20width%3D%224%22%20height%3D%2212%22%20rx%3D%222%22%20transform%3D%22rotate(12%2034%208)%22%20fill%3D%22%234ECB99%22%2F%3E%0A%3Crect%20x%3D%2220%22%20y%3D%2228%22%20width%3D%2220%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"),radial-gradient(120% 45% at 50% -8%, var(--glow) 0%, var(--bg) 55%);background-repeat:repeat-y,no-repeat;background-size:400px auto,auto;background-position:center 0px,center top;background-color:var(--bg);min-height:100vh;padding-bottom:120px}
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px}
+  .screen{display:none;animation:fade .3s both}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:20px 0 4px;padding-left:52px}
+  .brand{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:22px;letter-spacing:-1px;background:linear-gradient(90deg,#fff 45%,var(--green1) 70%,var(--purple1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .rest{font-size:12.5px;font-weight:800;color:var(--orange1);background:var(--ambbg);border:1px solid var(--ambline);padding:6px 12px;border-radius:999px}
+  .back{background:none;border:0;color:var(--muted);font-family:inherit;font-weight:700;font-size:16px;cursor:pointer;padding:12px 0}
+  .h1{font-weight:800;font-size:26px;margin:8px 0 4px}
+  .sub{color:var(--muted);font-size:15px;font-weight:500;margin-bottom:18px}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ptile{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 12px;text-align:center;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:9px}
+  .ptile:active{transform:scale(.97);border-color:var(--purple2)}
+  .ptile .em{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-size:34px;background:var(--bg2)}
+  .ptile .nm{font-size:16px;font-weight:800;color:var(--ink);line-height:1.3}
+  .ptile .pr{font-weight:800;font-size:15px;color:var(--green1)}
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;text-align:center;margin-bottom:16px}
+  .hero .em{font-size:64px;line-height:1}
+  .hero .nm{font-weight:800;font-size:22px;margin-top:10px;color:var(--ink)}
+  .hero .pr{font-weight:800;font-size:18px;color:var(--green1);margin-top:4px}
+  .qty{display:flex;align-items:center;justify-content:center;gap:20px;margin:8px 0 4px}
+  .qbtn{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--bg2);color:var(--ink);font-size:26px;font-weight:800;cursor:pointer;display:grid;place-items:center}
+  .qbtn:active{transform:scale(.94)}
+  .qval{font-size:28px;font-weight:800;min-width:44px;text-align:center}
+  .sec-t{font-weight:800;font-size:16px;margin:20px 0 10px;color:var(--ink)}
+  .sauce{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+  .sauce b{font-size:15.5px;font-weight:700;color:var(--label)}
+  .tgl{display:flex;gap:8px}
+  .tgl button{border:1px solid var(--line);background:var(--bg2);color:var(--muted);font-family:inherit;font-weight:800;font-size:14px;padding:9px 20px;border-radius:10px;cursor:pointer}
+  .tgl button.yes.on{border-color:var(--green2);background:var(--grnbg);color:var(--green1)}
+  .tgl button.no.on{border-color:var(--redline);background:var(--redbg);color:var(--redtx)}
+  .cta{display:block;width:100%;border:0;cursor:pointer;padding:18px;border-radius:16px;font-family:inherit;font-weight:800;font-size:18px;color:var(--ink);background:linear-gradient(90deg,var(--orange2),var(--green2) 55%,var(--purple2));box-shadow:0 16px 34px -12px rgba(122,107,245,.5);margin-top:12px}
+  .cta:disabled{opacity:.6}
+  .cta:active{transform:translateY(1px)}
+  .ghost{display:block;width:100%;padding:16px;border-radius:16px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;background:transparent;color:var(--ink);border:1.5px solid var(--line2);margin-top:10px}
+  .cartbar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(0deg,var(--bg) 60%,transparent);padding:16px 18px 22px;display:none}
+  .cartbar.show{display:block}
+  .cartbar .in{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,var(--green2),var(--purple2));border-radius:16px;padding:14px 18px;cursor:pointer;box-shadow:0 16px 34px -12px rgba(122,107,245,.6)}
+  .cartbar .cnt{background:rgba(255,255,255,.25);color:var(--ink);font-weight:800;font-size:14px;padding:4px 11px;border-radius:999px}
+  .cartbar .lbl{flex:1;color:var(--ink);font-weight:800;font-size:16px}
+  .cartbar .tot{color:var(--ink);font-weight:800;font-size:16px}
+  .line{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+  .line .info b{font-size:16px;font-weight:800;color:var(--ink);display:block}
+  .line .info span{font-size:12.5px;color:var(--muted);font-weight:600;display:block;margin-top:3px}
+  .line .rgt{text-align:left;white-space:nowrap}
+  .line .rgt b{color:var(--green1);font-weight:800;font-size:15px;display:block}
+  .line .rgt x{color:var(--dim3);font-size:12.5px;cursor:pointer;font-weight:700}
+  .totalbox{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(150deg,var(--tot1),var(--tot2));border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}
+  .totalbox .k{color:var(--muted);font-weight:700;font-size:15px}
+  .totalbox .v{color:var(--ink);font-weight:800;font-size:26px}
+  .empty{text-align:center;color:var(--dim);font-weight:600;padding:30px 0;font-size:15px}
+  .receipt{text-align:center;padding:20px 0}
+  .rnum{margin:14px auto;background:linear-gradient(150deg,var(--green1),var(--green2));border-radius:24px;padding:28px;max-width:340px;box-shadow:0 20px 44px -14px rgba(47,176,127,.55)}
+  .rnum .lbl{color:rgba(255,255,255,.85);font-size:15px;font-weight:700}
+  .rnum .n{color:var(--ink);font-size:72px;font-weight:800;line-height:1;margin-top:6px;font-family:"Baloo 2",sans-serif}
+  .rinfo{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:16px;max-width:360px;margin:0 auto;text-align:right}
+  .rrow{display:flex;justify-content:space-between;font-size:14px;padding:6px 0}
+  .rrow .k{color:var(--muted);font-weight:600}
+  .rrow .v{color:var(--ink);font-weight:700}
+  .rrow.big .v{color:var(--green1);font-size:18px;font-weight:800}
+  .note{color:var(--muted);font-size:14px;margin:18px auto 0;max-width:360px;line-height:1.8}
+  .msg{display:none;font-weight:700;font-size:14px;padding:11px 13px;border-radius:12px;margin-top:12px;line-height:1.6}
+  .msg.show{display:block}
+  .msg.err{color:var(--red);background:var(--redbg);border:1px solid var(--redline)}
+  .gate{max-width:460px;margin:80px auto;text-align:center;padding:0 22px}
+  .themebtn{position:fixed;top:12px;left:12px;z-index:60;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;display:grid;place-items:center}
+  .themebtn svg{width:19px;height:19px;fill:currentColor}
+  .outbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--outline);background:var(--outbg);color:var(--outtx);cursor:pointer;display:grid;place-items:center;flex:0 0 auto;padding:0}
+  .outbtn svg{width:18px;height:18px;fill:currentColor}
+  .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0 18px}
+  .cat{background:linear-gradient(155deg,var(--cat1),var(--cat2));border:1px solid var(--line);border-radius:16px;padding:11px 6px;text-align:center;cursor:pointer;transition:.15s}
+  .cat.on{border-color:var(--orange1);background:linear-gradient(155deg,var(--caton1),var(--caton2))}
+  .cat .ci{width:44px;height:44px;margin:0 auto 6px;border-radius:12px;background:var(--catic) center/cover no-repeat;display:grid;place-items:center;font-size:20px}
+  .cat .cn{font-size:11.5px;font-weight:800;color:var(--text);line-height:1.25;word-break:break-word}
+  .cat.on .cn{color:var(--orange1)}
+  /* شعار المطعم: 44px كما في المقاس المطلوب، مع وميض عند التمرير أو اللمس */
+  .rlogowrap{position:relative;display:inline-block;flex:0 0 auto;border-radius:12px;
+             overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent;
+             transition:transform .18s ease, box-shadow .18s ease}
+  .rlogo{width:44px;height:44px;border-radius:12px;object-fit:cover;border:1px solid var(--line);display:block}
+  .rlogowrap::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:12px;
+    background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.75) 50%,transparent 62%);
+    transform:translateX(-140%);opacity:0}
+  .rlogowrap:hover,.rlogowrap:active,.rlogowrap.flash{transform:scale(1.07);box-shadow:0 0 0 3px var(--ring)}
+  .rlogowrap:hover::after,.rlogowrap.flash::after{opacity:1;animation:shine .75s ease-out}
+  @keyframes shine{from{transform:translateX(-140%)}to{transform:translateX(140%)}}
+
+  /* ــ طبقة دلالية: قيمها هنا مطابقة تماماً للمظهر الليلي الحالي ــ */
+  :root{
+    --ink:#fff; --label:#E6E9EF; --hair:#20242E; --dim:#6C7484; --dim2:#7C8497; --dim3:#8B93A2;
+    --glow:#1B2130; --line2:#333A47; --inset:#12151C;
+    --redbg:#2A1618; --redline:#4A2224; --redtx:#FF8A8A; --warntx:#FFB0B0;
+    --grnbg:#12251C; --grnline:#1E4A32; --ambbg:#2C2612; --ambline:#40371A;
+    --prpbg:#20213A; --prpline:#3A2E52; --neubg:#242A36; --neutx:#CDD4E0;
+    --outbg:#2A1424; --outline:#4A2038; --outtx:#FF7D96;
+    --tot1:#1D2130; --tot2:#171A22; --cat1:#1B2235; --cat2:#141A29;
+    --caton1:#2A2416; --caton2:#1E1B12; --catic:#0F1420;
+    --ring:rgba(78,203,153,.45); --pw1:#12321F; --pw2:#14261C; --mut1:#7A828F; --mut2:#4C5561;
+  }
+
+  /* ══ المظهر الفاتح: أبيض · أحمر · أزرق ══ */
+  body.light{
+    --bg:#FFFFFF; --bg2:#F5F7FB; --card:#FFFFFF; --line:#E2E7F0;
+    --text:#151A22; --muted:#5C6879;
+    /* أحمر · أخضر · أزرق — بنفس أدوار التصميم الأصلي */
+    --orange1:#F0566B; --orange2:#DB2438;   /* مكان البرتقالي: أحمر */
+    --green1:#0B8A5B;  --green2:#067A50;    /* أخضر حقيقي */
+    --purple1:#3B6FEA; --purple2:#2450D8;   /* مكان البنفسجي: أزرق */
+    --blue1:#2563EB;   --blue2:#1B4FD1;
+    --amber:#C2410C;   --red:#DB2438;
+
+    --ink:#151A22; --label:#1B2430; --hair:#EDF1F7;
+    --dim:#7A8598; --dim2:#8A94A6; --dim3:#94A0B2;
+    --glow:#EFF4FD; --line2:#DDE4EF; --inset:#F8FAFD;
+    --redbg:#FDECEE; --redline:#F6C9CF; --redtx:#C42033; --warntx:#A81B2C;
+    --grnbg:#EAF2FE; --grnline:#C6DAFA;
+    --ambbg:#FFF0EA; --ambline:#FBD2C2;
+    --prpbg:#EDF1FE; --prpline:#CCD8FA;
+    --neubg:#EEF1F6; --neutx:#41506A;
+    --outbg:#FDECEE; --outline:#F6C9CF; --outtx:#C42033;
+    --tot1:#F4F8FF; --tot2:#EDF3FC; --cat1:#FFFFFF; --cat2:#FAFCFF;
+    --caton1:#FDECEE; --caton2:#FFF6F7; --catic:#F1F5FB;
+    --ring:rgba(37,99,235,.30); --pw1:#EAF2FE; --pw2:#F3F8FF; --mut1:#9AA5B5; --mut2:#7A8598;
+  }
+  body.light{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%221600%22%20viewBox%3D%220%200%20400%201600%22%3E%3Cg%20opacity%3D%22.06%22%3E%3Cg%20transform%3D%22translate(38%2070)%20rotate(-12)%20scale(1.35)%22%3E%3Cg%3E%3Cpath%20d%3D%22M8%2026c0-9%208-16%2020-16s20%207%2020%2016z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2215%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2226%22%20width%3D%2244%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M6%2033c4%204%208-2%2012%202s8-2%2012%202%208-2%2012%202%206-2%206-2v3H6z%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2239%22%20width%3D%2244%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M8%2046c0%205%206%208%2020%208s20-3%2020-8z%22%20fill%3D%22%23DB2438%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(300%20210)%20rotate(14)%20scale(1.00)%22%3E%3Cg%3E%3Cpath%20d%3D%22M30%204%2054%2050a3%203%200%200%201-3%204H9a3%203%200%200%201-3-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M9%2048h42a3%203%200%200%201%203%204H6a3%203%200%200%201%203-4z%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2224%22%20r%3D%224%22%20fill%3D%22%230B8A5B%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Ccircle%20cx%3D%2240%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%230B8A5B%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2244%22%20r%3D%222.6%22%20fill%3D%22%230B8A5B%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%20400)%20rotate(7)%20scale(1.15)%22%3E%3Cg%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2215%22%20width%3D%225.4%22%20height%3D%2221%22%20rx%3D%222.7%22%20transform%3D%22rotate(-16%2018.7%2025)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2224%22%20y%3D%228%22%20%20width%3D%225.4%22%20height%3D%2228%22%20rx%3D%222.7%22%20transform%3D%22rotate(-5%2026.7%2022)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2231%22%20y%3D%2211%22%20width%3D%225.4%22%20height%3D%2225%22%20rx%3D%222.7%22%20transform%3D%22rotate(7%2033.7%2023)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2238%22%20y%3D%2217%22%20width%3D%225.4%22%20height%3D%2219%22%20rx%3D%222.7%22%20transform%3D%22rotate(17%2040.7%2026)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-4.6%2022a5%205%200%200%201-4.9%204H21.5a5%205%200%200%201-4.9-4z%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-1.5%207H13.5z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M23%2040h5.5l-2.4%2017h-5z%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.3%22%2F%3E%0A%3Cpath%20d%3D%22M33%2040h5.5l-1.9%2017h-5z%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.3%22%2F%3E%0A%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%20560)%20rotate(-9)%20scale(0.85)%22%3E%3Cg%3E%3Cpath%20d%3D%22M14%2018h32l-4%2034a5%205%200%200%201-5%204H23a5%205%200%200%201-5-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%2238%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Crect%20x%3D%2232%22%20y%3D%222%22%20width%3D%224%22%20height%3D%2212%22%20rx%3D%222%22%20transform%3D%22rotate(12%2034%208)%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Crect%20x%3D%2220%22%20y%3D%2228%22%20width%3D%2220%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(46%20720)%20rotate(10)%20scale(1.25)%22%3E%3Cg%3E%3Cpath%20d%3D%22M8%2026c0-9%208-16%2020-16s20%207%2020%2016z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2215%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2226%22%20width%3D%2244%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M6%2033c4%204%208-2%2012%202s8-2%2012%202%208-2%2012%202%206-2%206-2v3H6z%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2239%22%20width%3D%2244%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M8%2046c0%205%206%208%2020%208s20-3%2020-8z%22%20fill%3D%22%23DB2438%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(230%20880)%20rotate(-14)%20scale(1.00)%22%3E%3Cg%3E%3Cpath%20d%3D%22M30%204%2054%2050a3%203%200%200%201-3%204H9a3%203%200%200%201-3-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M9%2048h42a3%203%200%200%201%203%204H6a3%203%200%200%201%203-4z%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2224%22%20r%3D%224%22%20fill%3D%22%230B8A5B%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Ccircle%20cx%3D%2240%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%230B8A5B%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2244%22%20r%3D%222.6%22%20fill%3D%22%230B8A5B%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%201050)%20rotate(6)%20scale(1.40)%22%3E%3Cg%3E%3Cpath%20d%3D%22M8%2026c0-9%208-16%2020-16s20%207%2020%2016z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2228%22%20cy%3D%2215%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2218%22%20r%3D%221.6%22%20fill%3D%22%23FFFFFF%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2226%22%20width%3D%2244%22%20height%3D%226%22%20rx%3D%223%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M6%2033c4%204%208-2%2012%202s8-2%2012%202%208-2%2012%202%206-2%206-2v3H6z%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Crect%20x%3D%226%22%20y%3D%2239%22%20width%3D%2244%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M8%2046c0%205%206%208%2020%208s20-3%2020-8z%22%20fill%3D%22%23DB2438%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%201220)%20rotate(12)%20scale(0.90)%22%3E%3Cg%3E%3Cpath%20d%3D%22M30%204%2054%2050a3%203%200%200%201-3%204H9a3%203%200%200%201-3-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M9%2048h42a3%203%200%200%201%203%204H6a3%203%200%200%201%203-4z%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2224%22%20r%3D%224%22%20fill%3D%22%230B8A5B%22%2F%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Ccircle%20cx%3D%2240%22%20cy%3D%2238%22%20r%3D%223.4%22%20fill%3D%22%230B8A5B%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2244%22%20r%3D%222.6%22%20fill%3D%22%230B8A5B%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(40%201380)%20rotate(-8)%20scale(1.10)%22%3E%3Cg%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2215%22%20width%3D%225.4%22%20height%3D%2221%22%20rx%3D%222.7%22%20transform%3D%22rotate(-16%2018.7%2025)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2224%22%20y%3D%228%22%20%20width%3D%225.4%22%20height%3D%2228%22%20rx%3D%222.7%22%20transform%3D%22rotate(-5%2026.7%2022)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2231%22%20y%3D%2211%22%20width%3D%225.4%22%20height%3D%2225%22%20rx%3D%222.7%22%20transform%3D%22rotate(7%2033.7%2023)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2238%22%20y%3D%2217%22%20width%3D%225.4%22%20height%3D%2219%22%20rx%3D%222.7%22%20transform%3D%22rotate(17%2040.7%2026)%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-4.6%2022a5%205%200%200%201-4.9%204H21.5a5%205%200%200%201-4.9-4z%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M12%2031h36l-1.5%207H13.5z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M23%2040h5.5l-2.4%2017h-5z%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.3%22%2F%3E%0A%3Cpath%20d%3D%22M33%2040h5.5l-1.9%2017h-5z%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.3%22%2F%3E%0A%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(240%201500)%20rotate(9)%20scale(1.20)%22%3E%3Cg%3E%3Cpath%20d%3D%22M14%2018h32l-4%2034a5%205%200%200%201-5%204H23a5%205%200%200%201-5-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%2238%22%20height%3D%227%22%20rx%3D%223.5%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Crect%20x%3D%2232%22%20y%3D%222%22%20width%3D%224%22%20height%3D%2212%22%20rx%3D%222%22%20transform%3D%22rotate(12%2034%208)%22%20fill%3D%22%230B8A5B%22%2F%3E%0A%3Crect%20x%3D%2220%22%20y%3D%2228%22%20width%3D%2220%22%20height%3D%224%22%20rx%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"),radial-gradient(120% 45% at 50% -8%, var(--glow) 0%, var(--bg) 55%)}
+  body.light .ptile:active{border-color:var(--blue2)}
+  body.light .card,body.light .card2,body.light .req,body.light .ticket,
+  body.light .ocard,body.light .sheet,body.light .modalbox{box-shadow:0 1px 3px rgba(20,30,60,.06),0 8px 24px -16px rgba(20,30,60,.18)}
+  body.light .ghost{background:#F5F7FB;border-color:var(--line);color:var(--text)}
+  body.light .tgl button.no.on{background:var(--redbg);border-color:var(--redline);color:var(--redtx)}
+  body.light .tgl button.yes.on{background:var(--grnbg);border-color:var(--grnline);color:var(--green1)}
+  body.light .cartbar{background:linear-gradient(0deg,#FFFFFF 60%,rgba(255,255,255,0))}
+  body.light .cta{color:#fff}
+  body.light .cartbar .cnt{color:#fff}
+  body.light .cartbar .lbl{color:#fff}
+  body.light .cartbar .tot{color:#fff}
+  body.light .rnum .n{color:#fff}
+
+  /* الشعار: «food» تصير داكنة على الأبيض بدل أن تختفي */
+  body.light .brand{background:linear-gradient(90deg,var(--text) 45%,var(--green1) 72%,var(--purple1) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  body.scr-receipt{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%221600%22%20viewBox%3D%220%200%20400%201600%22%3E%3Cg%20opacity%3D%22.075%22%3E%3Cg%20transform%3D%22translate(38%2070)%20rotate(-12)%20scale(1.35)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(300%20210)%20rotate(14)%20scale(1.00)%22%3E%3Cg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2220%22%20fill%3D%22%23F0762E%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%2F%3E%0A%3Cpath%20d%3D%22M30%2021v18M26%2024.5h7a4%204%200%200%201%200%208h-6a4%204%200%200%200%200%208h7%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222.2%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.8%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%20400)%20rotate(7)%20scale(1.15)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%20560)%20rotate(-9)%20scale(0.85)%22%3E%3Cg%3E%3Cpath%20d%3D%22M12%206h36v44l-5-4-5%204-5-4-5%204-5-4-5%204-6-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M19%2017h22M19%2025h22M19%2033h14%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.6%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(46%20720)%20rotate(10)%20scale(1.25)%22%3E%3Cg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2220%22%20fill%3D%22%23F0762E%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%2F%3E%0A%3Cpath%20d%3D%22M30%2021v18M26%2024.5h7a4%204%200%200%201%200%208h-6a4%204%200%200%200%200%208h7%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222.2%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.8%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(230%20880)%20rotate(-14)%20scale(1.00)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%201050)%20rotate(6)%20scale(1.40)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%201220)%20rotate(12)%20scale(0.90)%22%3E%3Cg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2220%22%20fill%3D%22%23F0762E%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%2F%3E%0A%3Cpath%20d%3D%22M30%2021v18M26%2024.5h7a4%204%200%200%201%200%208h-6a4%204%200%200%200%200%208h7%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222.2%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.8%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(40%201380)%20rotate(-8)%20scale(1.10)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23F0762E%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%230F1116%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(240%201500)%20rotate(9)%20scale(1.20)%22%3E%3Cg%3E%3Cpath%20d%3D%22M12%206h36v44l-5-4-5%204-5-4-5%204-5-4-5%204-6-4z%22%20fill%3D%22%23FBA255%22%2F%3E%0A%3Cpath%20d%3D%22M19%2017h22M19%2025h22M19%2033h14%22%20stroke%3D%22%230F1116%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.6%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"),radial-gradient(120% 45% at 50% -8%, var(--glow) 0%, var(--bg) 55%)}
+  body.light.scr-receipt{background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%221600%22%20viewBox%3D%220%200%20400%201600%22%3E%3Cg%20opacity%3D%22.06%22%3E%3Cg%20transform%3D%22translate(38%2070)%20rotate(-12)%20scale(1.35)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(300%20210)%20rotate(14)%20scale(1.00)%22%3E%3Cg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2220%22%20fill%3D%22%23DB2438%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%2F%3E%0A%3Cpath%20d%3D%22M30%2021v18M26%2024.5h7a4%204%200%200%201%200%208h-6a4%204%200%200%200%200%208h7%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.2%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.8%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%20400)%20rotate(7)%20scale(1.15)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%20560)%20rotate(-9)%20scale(0.85)%22%3E%3Cg%3E%3Cpath%20d%3D%22M12%206h36v44l-5-4-5%204-5-4-5%204-5-4-5%204-6-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M19%2017h22M19%2025h22M19%2033h14%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.6%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(46%20720)%20rotate(10)%20scale(1.25)%22%3E%3Cg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2220%22%20fill%3D%22%23DB2438%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%2F%3E%0A%3Cpath%20d%3D%22M30%2021v18M26%2024.5h7a4%204%200%200%201%200%208h-6a4%204%200%200%200%200%208h7%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.2%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.8%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(230%20880)%20rotate(-14)%20scale(1.00)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(120%201050)%20rotate(6)%20scale(1.40)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(320%201220)%20rotate(12)%20scale(0.90)%22%3E%3Cg%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2220%22%20fill%3D%22%23DB2438%22%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2215%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222%22%20opacity%3D%22.55%22%2F%3E%0A%3Cpath%20d%3D%22M30%2021v18M26%2024.5h7a4%204%200%200%201%200%208h-6a4%204%200%200%200%200%208h7%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.2%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.8%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(40%201380)%20rotate(-8)%20scale(1.10)%22%3E%3Cg%3E%3Crect%20x%3D%224%22%20y%3D%2214%22%20width%3D%2252%22%20height%3D%2230%22%20rx%3D%225%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2242%22%20height%3D%2220%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.6%22%20opacity%3D%22.6%22%2F%3E%0A%3Ccircle%20cx%3D%2230%22%20cy%3D%2229%22%20r%3D%227%22%20fill%3D%22%23DB2438%22%2F%3E%0A%3Cpath%20d%3D%22M30%2024v10M27.5%2026.5h5M27.5%2031.5h5%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3Ccircle%20cx%3D%2247%22%20cy%3D%2229%22%20r%3D%222%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%22.5%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate(240%201500)%20rotate(9)%20scale(1.20)%22%3E%3Cg%3E%3Cpath%20d%3D%22M12%206h36v44l-5-4-5%204-5-4-5%204-5-4-5%204-6-4z%22%20fill%3D%22%23F0566B%22%2F%3E%0A%3Cpath%20d%3D%22M19%2017h22M19%2025h22M19%2033h14%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.6%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"),radial-gradient(120% 45% at 50% -8%, var(--glow) 0%, var(--bg) 55%)}
+</style>
+<script>
+  // حماية من Clickjacking — بلا كسر المتصفّحات المدمجة (واتساب/فيسبوك/المعاينة)
+  // نحاول الخروج من الإطار فقط، ولا نمسح الصفحة أبداً إن تعذّر ذلك.
+  (function(){
+    try{
+      if (window.top !== window.self && window.top.location.origin !== window.self.location.origin) {
+        window.top.location = window.self.location.href;
+      }
+    }catch(e){ /* متصفّح مدمج أو منع أمني — نتجاهل بلا تعطيل الصفحة */ }
+  })();
+</script>
+</head>
+<body>
+<button class="themebtn" id="themeBtn" onclick="toggleTheme()" aria-label="تبديل المظهر">
+  <svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.3 0-.6-.05-.9A7 7 0 0 1 12.9 3.05 9.4 9.4 0 0 0 12 3Z"/></svg>
+</button>
+
+<div id="gate" class="gate" style="display:none">
+  <div class="brand" style="font-size:30px">foodordo</div>
+  <h2 class="h1" style="text-align:center;margin-top:16px">هذه شاشة الطلب داخل المطعم</h2>
+  <p class="sub" style="text-align:center">تُفتح على جهاز المطعم عبر رابط يحمل معرّف المطعم. لا يوجد معرّف في الرابط الحالي.</p>
+</div>
+
+<div id="app" style="display:none">
+
+<section id="menu" class="screen active"><div class="wrap">
+  <div class="top"><div class="brand">foodordo</div><div style="display:flex;align-items:center;gap:9px"><span class="rlogowrap" id="restLogoWrap" style="display:none" tabindex="0"><img id="restLogo" class="rlogo" alt="شعار المطعم" /></span><div class="rest" id="restTag">مطعم</div></div></div>
+  <button class="back" id="catBack" style="display:none" onclick="goBackCat()">‹ رجوع</button>
+  <div class="h1" id="menuTitle">اختر ما تريد</div>
+  <div class="sub" id="menuSub">اضغط على القسم لعرض ما بداخله.</div>
+  <div id="catBar" class="cats"></div>
+  <div id="prodList"><div class="empty">جارٍ تحميل القائمة…</div></div>
+</div></section>
+
+<section id="item" class="screen"><div class="wrap">
+  <button class="back" onclick="show('menu')">‹ رجوع</button>
+  <div class="hero"><div class="em" id="itemImg">🍽️</div><div class="nm" id="itemName"></div><div class="pr" id="itemPrice"></div></div>
+  <div class="sec-t">الكمية</div>
+  <div class="qty"><button class="qbtn" onclick="chgQty(-1)">−</button><span class="qval" id="qtyVal">1</span><button class="qbtn" onclick="chgQty(1)">+</button></div>
+  <div class="sec-t" id="sauceTitle">الصلصات (اختياري)</div>
+  <div id="sauceList"></div>
+  <button class="cta" onclick="addToCart()">أضف إلى الطلب</button>
+</div></section>
+
+<section id="review" class="screen"><div class="wrap">
+  <div class="top"><div class="brand">foodordo</div><div class="rest" id="restTag2">مطعم</div></div>
+  <div class="h1">هل تريد شيئاً آخر؟</div>
+  <div class="sub">راجع طلبك، أو أضف المزيد قبل الإصدار.</div>
+  <div id="reviewList"></div>
+  <div class="totalbox"><span class="k">المجموع</span><span class="v"><span id="reviewTotal">0</span> دج</span></div>
+  <div id="rvMsg" class="msg err"></div>
+  <button class="ghost" onclick="show('menu')">نعم، أضف المزيد +</button>
+  <button class="cta" id="submitBtn" onclick="submitOrder()">لا، أصدر الطلب</button>
+</div></section>
+
+<section id="receipt" class="screen"><div class="wrap"><div class="receipt">
+  <div class="brand" style="font-size:26px">foodordo</div>
+  <div class="rnum"><div class="lbl">رقم طلبك</div><div class="n" id="orderNum">—</div></div>
+  <div class="rinfo">
+    <div id="receiptItems"></div>
+    <div class="rrow big" style="border-top:1px solid var(--line);margin-top:8px;padding-top:12px"><span class="k">الإجمالي</span><span class="v"><span id="receiptTotal">0</span> دج</span></div>
+    <div class="rrow"><span class="k">التاريخ</span><span class="v" id="receiptDate"></span></div>
+  </div>
+  <div class="note">قدّم <b>رقم طلبك</b> للكاشير لإتمام الدفع. احتفظ به حتى استلام طلبك.</div>
+  <button class="cta" style="max-width:360px;margin:22px auto 0" onclick="newOrder()">طلب جديد</button>
+</div></div></section>
+
+<div class="cartbar" id="cartbar"><div class="in" onclick="show('review')">
+  <span class="cnt" id="cartCnt">0</span><span class="lbl">مراجعة الطلب</span><span class="tot"><span id="cartTot">0</span> دج</span>
+</div></div>
+
+</div>
+
+<script>
+  // ===== حماية من XSS: تهريب أي نصّ قادم من المستخدم قبل عرضه =====
+  // ===== رسائل أخطاء آمنة: لا نكشف تفاصيل قاعدة البيانات للمستخدم =====
+  function safeErr(e){
+    var m = String((e && e.message) || e || '');
+    if(/[\u0600-\u06FF]/.test(m) && m.indexOf('{')<0 && m.length<160) return m;
+    if(m.indexOf('Invalid login')>-1 || m.indexOf('invalid_grant')>-1) return 'البريد أو كلمة السر غير صحيحة.';
+    if(m.indexOf('rate limit')>-1)          return 'الخدمة مزدحمة حالياً، حاول بعد لحظات.';
+    if(m.indexOf('insufficient stock:')>-1) return 'نفد المخزون من: ' + esc(m.split('insufficient stock:')[1].split('"')[0].replace(/[}\\]/g,'').trim());
+    if(m.indexOf('daily limit')>-1)         return 'اكتمل الحدّ الأقصى للطلبات اليوم.';
+    if(m.indexOf('invalid product')>-1)     return 'أحد المنتجات لم يعد متاحاً. حدّث القائمة.';
+    if(m.indexOf('empty order')>-1)         return 'الطلب فارغ.';
+    if(m.indexOf('does not belong')>-1)     return 'هذا الطلب لا يخصّ مطعمك.';
+    if(m.indexOf('materials_qty_non_negative')>-1) return 'الكمية غير كافية في المخزون.';
+    if(m.indexOf('chk_')>-1 || m.indexOf('char_length')>-1) return 'أحد الحقول أطول من المسموح. اختصره.';
+    if(m.indexOf('duplicate key')>-1)       return 'هذا العنصر مسجّل مسبقاً.';
+    if(m.indexOf('violates foreign key')>-1)return 'لا يمكن تنفيذ العملية — العنصر مرتبط ببيانات أخرى.';
+    if(m.indexOf('row-level security')>-1 || m.indexOf('permission denied')>-1) return 'لا تملك صلاحية هذه العملية.';
+    if(m.indexOf('JWT')>-1 || m.indexOf('PGRST303')>-1) return 'انتهت الجلسة، سجّل الدخول من جديد.';
+    if(m.indexOf('Failed to fetch')>-1 || m.indexOf('NetworkError')>-1) return 'تعذّر الاتصال — تحقّق من الإنترنت.';
+    return 'تعذّر إتمام العملية. حاول مجدداً.';
+  }
+  function applyTheme(t){
+    document.body.classList.toggle('light', t==='light');
+    var ic=document.getElementById('themeIcon');
+    if(ic) ic.innerHTML = (t==='light')
+      ? '<path d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-13a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V5a1 1 0 0 1 1-1Zm0 14a1 1 0 0 1 1 1V20a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM4 12a1 1 0 0 1 1-1h1.5a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1Zm13.5 0a1 1 0 0 1 1-1H20a1 1 0 1 1 0 2h-1.5a1 1 0 0 1-1-1Z"/>'
+      : '<path d="M12 3a9 9 0 1 0 9 9c0-.3 0-.6-.05-.9A7 7 0 0 1 12.9 3.05 9.4 9.4 0 0 0 12 3Z"/>';
+  }
+  function toggleTheme(){
+    var t = document.body.classList.contains('light') ? 'dark' : 'light';
+    try{ localStorage.setItem('fo_theme', t); }catch(e){}
+    applyTheme(t);
+  }
+  (function(){ var t='dark'; try{ t=localStorage.getItem('fo_theme')||'dark'; }catch(e){} applyTheme(t); })();
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var SUPABASE_URL='https://tflmkscxuvznpvidcgff.supabase.co';
+  var SUPABASE_KEY='sb_publishable_P210ESDiwZnLYYqTu4rc3A_s5C-xHuh';
+  var REST=SUPABASE_URL+'/rest/v1/';
+  function H(x){ var h={apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}; if(x){for(var k in x)h[k]=x[k];} return h; }
+  function gGet(p){ return fetch(REST+p,{headers:H()}).then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t)}); return r.json(); }); }
+  function gPost(p,b){ return fetch(REST+p,{method:'POST',headers:H({'Content-Type':'application/json','Prefer':'return=representation'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t)}); return r.json(); }); }
+  function gRpc(fn,b){ return fetch(REST+'rpc/'+fn,{method:'POST',headers:H({'Content-Type':'application/json'}),body:JSON.stringify(b)}).then(function(r){ if(!r.ok)return r.text().then(function(t){throw new Error(t)}); return r.json(); }); }
+
+  var RID=new URLSearchParams(location.search).get('rid');
+  var sauces=['كاتشب','مايونيز','صلصة حارة','ثوم','خردل'];
+  var products=[], cart=[], sel={pi:0,qty:1,sauces:{}};
+
+  function iso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function show(id){ var s=document.querySelectorAll('.screen'); for(var i=0;i<s.length;i++)s[i].classList.remove('active'); document.getElementById(id).classList.add('active'); document.body.classList.toggle('scr-receipt', id==='receipt'); window.scrollTo({top:0}); updateCartBar(id); }
+
+  function boot(){
+    if(!RID){ document.getElementById('gate').style.display='block'; return; }
+    document.getElementById('app').style.display='block';
+    gRpc('restaurant_name',{p_id:RID}).then(function(n){ if(n){ document.getElementById('restTag').textContent=n; document.getElementById('restTag2').textContent=n; } }).catch(function(){});
+    gRpc('restaurant_logo',{p_id:RID}).then(function(u){
+      if(u){
+        var lg=document.getElementById('restLogo'), w=document.getElementById('restLogoWrap');
+        if(lg&&w){
+          lg.src=u; w.style.display='inline-block';
+          // وميض عند اللمس (على الهاتف لا يوجد تمرير فأرة)
+          w.addEventListener('pointerdown', function(){
+            w.classList.remove('flash');
+            void w.offsetWidth;          // إعادة تشغيل الحركة
+            w.classList.add('flash');
+            setTimeout(function(){ w.classList.remove('flash'); }, 800);
+          });
+        }
+      }
+    }).catch(function(){});
+    loadProducts();
+  }
+  var cats=[], catPath=[]; // شجرة الأقسام ومسار التنقّل الحالي
+  function loadProducts(){
+    Promise.all([
+      gGet('categories?select=*&restaurant_id=eq.'+RID+'&order=created_at.asc'),
+      gRpc('menu_products',{p_restaurant_id:RID})
+    ]).then(function(r){
+      cats=r[0]||[]; products=r[1]||[]; catPath=[]; renderLevel();
+    }).catch(function(e){ document.getElementById('prodList').innerHTML='<div class="empty">تعذّر التحميل: '+safeErr(e)+'</div>'; });
+  }
+  function curCatId(){ return catPath.length? catPath[catPath.length-1].id : null; }
+  function tile(img,name,price,onclick){
+    var em = img ? '<div class="em" style="background-image:url(\''+img+'\');background-size:cover;background-position:center"></div>' : '<div class="em">🍽️</div>';
+    var pr = (price!=null)? '<div class="pr">'+price+' دج</div>' : '';
+    return '<div class="ptile" onclick="'+onclick+'">'+em+'<div class="nm">'+name+'</div>'+pr+'</div>';
+  }
+  function renderLevel(){
+    var cid=curCatId();
+    var subs=cats.filter(function(c){ return (c.parent_id||null)===cid; });
+    var prods=products.filter(function(p){ return (p.category_id||null)===cid; });
+    var el=document.getElementById('prodList');
+    var bar=document.getElementById('catBar');
+
+    document.getElementById('catBack').style.display = catPath.length? 'block':'none';
+    document.getElementById('menuTitle').textContent = catPath.length? catPath[catPath.length-1].name : 'اختر ما تريد';
+
+    // شريط الأقسام: مستقلّ فوق القائمة، أربعة في كل صفّ
+    if(bar){
+      bar.innerHTML = subs.map(function(c){
+        var img = c.image_url
+          ? '<div class="ci" style="background-image:url(\''+c.image_url+'\')"></div>'
+          : '<div class="ci">🍽️</div>';
+        return '<div class="cat" onclick="openCat(\''+c.id+'\')">'+img+'<div class="cn">'+esc(c.name)+'</div></div>';
+      }).join('');
+      bar.style.display = subs.length ? 'grid' : 'none';
+    }
+
+    document.getElementById('menuSub').textContent = subs.length
+      ? 'اختر قسماً من الأعلى، أو اضغط منتجاً لإضافته.'
+      : 'اضغط على المنتج لإضافته إلى طلبك.';
+
+    var html='';
+    prods.forEach(function(p){ var i=products.indexOf(p); html+=tile(p.image_url,esc(p.name),(p.price||0),'openItem('+i+')'); });
+    el.innerHTML = html ? '<div class="pgrid">'+html+'</div>'
+      : (subs.length ? '' : '<div class="empty">لا توجد عناصر هنا بعد.</div>');
+  }
+
+  function openCat(id){ var c=cats.find(function(x){return x.id===id;}); if(c){ catPath.push(c); renderLevel(); window.scrollTo({top:0}); } }
+  function goBackCat(){ catPath.pop(); renderLevel(); window.scrollTo({top:0}); }
+  // هل يتخطّى هذا المنتج شاشة الصلصات؟ (يرث من أي قسم أعلى عليه علامة «بلا صلصات»)
+  function skipSauces(p){
+    var cid=p.category_id, guard=0;
+    while(cid && guard++<20){
+      var c=cats.find(function(x){return x.id===cid;});
+      if(!c) return false;
+      if(c.skip_sauces) return true;
+      cid=c.parent_id;
+    }
+    return false;
+  }
+  function openItem(i){
+    sel={pi:i,qty:1,sauces:{}};
+    var p=products[i];
+    var hi=document.getElementById('itemImg');
+    if(p.image_url){ hi.textContent=''; hi.style.backgroundImage="url('"+p.image_url+"')"; hi.style.backgroundSize='cover'; hi.style.backgroundPosition='center'; }
+    else { hi.textContent='🍽️'; hi.style.backgroundImage=''; }
+    document.getElementById('itemName').textContent=p.name;
+    document.getElementById('itemPrice').textContent=(p.price||0)+' دج';
+    document.getElementById('qtyVal').textContent='1';
+    var sl=document.getElementById('sauceList');
+    if(skipSauces(p)){
+      sl.innerHTML=''; sl.style.display='none';
+      var st=document.getElementById('sauceTitle'); if(st)st.style.display='none';
+    } else {
+      sl.style.display='';
+      var st2=document.getElementById('sauceTitle'); if(st2)st2.style.display='';
+      sl.innerHTML=sauces.map(function(s,si){
+        return '<div class="sauce"><b>'+s+'</b><div class="tgl"><button class="yes" id="y'+si+'" onclick="setSauce('+si+',true)">نعم</button><button class="no on" id="n'+si+'" onclick="setSauce('+si+',false)">لا</button></div></div>';
+      }).join('');
+    }
+    show('item');
+  }
+  function chgQty(d){ sel.qty=Math.max(1,sel.qty+d); document.getElementById('qtyVal').textContent=sel.qty; }
+  function setSauce(si,add){ sel.sauces[si]=add; document.getElementById('y'+si).classList.toggle('on',add); document.getElementById('n'+si).classList.toggle('on',!add); }
+  function addToCart(){
+    var p=products[sel.pi]; var chosen=[]; for(var k in sel.sauces){ if(sel.sauces[k]) chosen.push(sauces[k]); }
+    cart.push({product_id:p.id, name:p.name, price:Number(p.price||0), qty:sel.qty, sauces:chosen});
+    show('review'); renderReview();
+  }
+  function renderReview(){
+    var el=document.getElementById('reviewList');
+    if(!cart.length){ el.innerHTML='<div class="empty">سلّتك فارغة.</div>'; }
+    else{ el.innerHTML=cart.map(function(it,idx){
+      return '<div class="line"><div class="info"><b>'+esc(it.name)+' × '+it.qty+'</b>'+(it.sauces.length?('<span>صلصات: '+esc(it.sauces.join('، '))+'</span>'):'')+'</div><div class="rgt"><b>'+(it.price*it.qty)+' دج</b><x onclick="removeItem('+idx+')">حذف</x></div></div>';
+    }).join(''); }
+    document.getElementById('reviewTotal').textContent=cartTotal(); updateCartBar('review');
+  }
+  function removeItem(i){ cart.splice(i,1); renderReview(); }
+  function cartTotal(){ return cart.reduce(function(a,it){return a+it.price*it.qty;},0); }
+  function updateCartBar(screen){
+    document.getElementById('cartbar').classList.toggle('show', cart.length>0 && (screen==='menu'||screen==='item'));
+    document.getElementById('cartCnt').textContent=cart.reduce(function(a,it){return a+it.qty;},0);
+    document.getElementById('cartTot').textContent=cartTotal();
+  }
+
+  // إصدار الطلب: حساب الرقم اليومي ثم إنشاء الطلب وأصنافه
+  function submitOrder(){
+    if(!cart.length){ show('menu'); return; }
+    var msg=document.getElementById('rvMsg'); msg.className='msg err';
+    var btn=document.getElementById('submitBtn'); btn.disabled=true; btn.textContent='جارٍ الإصدار…';
+    var items=cart.map(function(it){ return {product_id:it.product_id, product_name:it.name, unit_price:it.price, quantity:it.qty, sauces:it.sauces.join('، ')}; });
+    gRpc('create_order', {p_restaurant_id:RID, p_total:cartTotal(), p_items:items})
+      .then(function(num){
+        document.getElementById('orderNum').textContent=num;
+        document.getElementById('receiptItems').innerHTML=cart.map(function(it){ return '<div class="rrow"><span class="k">'+esc(it.name)+' × '+it.qty+'</span><span class="v">'+(it.price*it.qty)+' دج</span></div>'; }).join('');
+        document.getElementById('receiptTotal').textContent=cartTotal();
+        var d=new Date(); document.getElementById('receiptDate').textContent=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+        show('receipt');
+      })
+      .catch(function(e){ msg.textContent=safeErr(e); msg.className='msg err show'; })
+      .finally(function(){ btn.disabled=false; btn.textContent='لا، أصدر الطلب'; });
+  }
+  function newOrder(){ cart=[]; show('menu'); }
+
+  boot();
+</script>
+<script>
+  /* الخلفية تتحرّك أبطأ من المحتوى فتبدو كصورة طويلة خلف الصفحة */
+  (function(){
+    var q=false;
+    function upd(){ q=false;
+      var y=Math.round((window.pageYOffset||document.documentElement.scrollTop||0)*-0.35);
+      document.body.style.backgroundPositionY = y+'px, 0px';
+    }
+    window.addEventListener('scroll', function(){ if(!q){ q=true; requestAnimationFrame(upd); } }, {passive:true});
+    window.addEventListener('resize', upd, {passive:true});
+    upd();
+  })();
+</script>
+</body>
+</html>
